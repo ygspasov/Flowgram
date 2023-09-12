@@ -4,7 +4,7 @@
       <div
         class="max-w-screen-xl flex flex-col sm:flex-row items-center justify-between mx-auto p-4"
       >
-        <div class="flex flex-col sm:flex-row items-center w-1/2">
+        <div class="flex flex-col sm:flex-row items-center">
           <RouterLink to="/" class="flex items-center mr-0 sm:mr-3 mb-3 sm:mb-0">
             <img
               src="https://flowbite.com/docs/images/logo.svg"
@@ -15,7 +15,7 @@
               >Flowbite</span
             >
           </RouterLink>
-          <form class="w-100">
+          <form>
             <label
               for="default-search"
               class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
@@ -42,20 +42,20 @@
               <input
                 type="search"
                 id="default-search"
-                class="block w-80 p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                class="block w-80 p-3 pl-8 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="Search people"
                 required
               />
               <button
                 type="submit"
-                class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-1 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 Search
               </button>
             </div>
           </form>
         </div>
-        <div>
+        <div class="mt-3 sm:mt-0 text-center">
           <button
             data-collapse-toggle="navbar-default"
             type="button"
@@ -86,17 +86,17 @@
             >
               <li>
                 <a
-                  href="#"
-                  class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500"
+                  href="/"
+                  class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:p-0 dark:text-white"
                   aria-current="page"
-                  >Home</a
+                  >Signup</a
                 >
               </li>
               <li>
                 <a
-                  href="#"
+                  href="/"
                   class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-                  >About</a
+                  >Login</a
                 >
               </li>
             </ul>

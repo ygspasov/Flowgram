@@ -1,17 +1,17 @@
 <template>
   <!-- Modal toggle -->
   <button
-    data-modal-target="authentication-modal"
-    data-modal-toggle="authentication-modal"
+    :data-modal-target="dataModal"
+    :data-modal-toggle="dataModal"
     class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
     type="button"
   >
-    Login
+    {{ title }}
   </button>
 
   <!-- Main modal -->
   <div
-    id="authentication-modal"
+    :id="dataModal"
     tabindex="-1"
     aria-hidden="true"
     class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
@@ -22,7 +22,7 @@
         <button
           type="button"
           class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
-          data-modal-hide="authentication-modal"
+          :data-modal-hide="dataModal"
         >
           <svg
             class="w-3 h-3"
@@ -43,9 +43,22 @@
         </button>
         <div class="px-6 py-6 lg:px-8">
           <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">
-            Sign in to our platform
+            {{ title }} to our platform
           </h3>
           <form class="space-y-6" action="#">
+            <div v-if="!isLogin">
+              <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                >Your name</label
+              >
+              <input
+                type="name"
+                name="name"
+                id="name"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                placeholder="name@company.com"
+                required
+              />
+            </div>
             <div>
               <label
                 for="email"
@@ -76,39 +89,13 @@
                 required
               />
             </div>
-            <div class="flex justify-between">
-              <div class="flex items-start">
-                <div class="flex items-center h-5">
-                  <input
-                    id="remember"
-                    type="checkbox"
-                    value=""
-                    class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-600 dark:border-gray-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
-                    required
-                  />
-                </div>
-                <label
-                  for="remember"
-                  class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >Remember me</label
-                >
-              </div>
-              <a href="#" class="text-sm text-blue-700 hover:underline dark:text-blue-500"
-                >Lost Password?</a
-              >
-            </div>
+
             <button
               type="submit"
               class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
-              Login to your account
+              {{ title }} to your account
             </button>
-            <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
-              Not registered?
-              <a href="#" class="text-blue-700 hover:underline dark:text-blue-500"
-                >Create account</a
-              >
-            </div>
           </form>
         </div>
       </div>
@@ -116,6 +103,13 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
+const props = defineProps({
+  isLogin: {
+    type: Boolean,
+    required: true,
+  },
+});
+const title = props.isLogin ? "Login" : "Sign up";
+const dataModal = props.isLogin ? "login" : "signup";
 </script>
 <style></style>

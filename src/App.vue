@@ -7,7 +7,7 @@ import Navbar from "@/components/NavBar.vue";
   <header class="">
     <div class="wrapper"><Navbar /></div>
   </header>
-  <div class="max-w-screen-xl flex flex-col sm:flex-row items-center justify-between mx-auto p-4">
+  <div class="max-w-screen-xl mx-auto">
     <RouterView />
   </div>
 </template>

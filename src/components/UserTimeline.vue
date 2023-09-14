@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full flex flex-col">
+  <div class="flex flex-wrap justify-center items-center">
     <SingleCard v-for="card in 3" />
   </div>
 </template>

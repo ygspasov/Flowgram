@@ -40,6 +40,7 @@
                 </svg>
               </div>
               <input
+                v-model="userName"
                 type="search"
                 id="default-search"
                 class="block w-80 p-3 pl-8 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -47,6 +48,7 @@
                 required
               />
               <button
+                @click.prevent="onSearch"
                 type="submit"
                 class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-1 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
@@ -85,20 +87,9 @@
               class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
             >
               <li>
-                <!-- <a
-                  href="/"
-                  class="block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:p-0 dark:text-white"
-                  aria-current="page"
-                  >Signup</a
-                > -->
                 <AuthModal :isLogin="false" />
               </li>
               <li>
-                <!-- <a
-                  href="/"
-                  class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-                  >Login</a
-                > -->
                 <AuthModal :isLogin="true" />
               </li>
             </ul>
@@ -112,5 +103,15 @@
 import { RouterLink } from "vue-router";
 import AuthModal from "./auth/AuthModal.vue";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+import router from "@/router";
+let userName = ref("");
+const onSearch = () => {
+  console.log("username", userName);
+  if (userName.value) {
+    router.push(`/profile/${userName.value}`);
+    userName.value = "";
+  }
+};
 </script>
 <style></style>

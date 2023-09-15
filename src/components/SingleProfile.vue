@@ -1,7 +1,31 @@
 <template>
   <div class="">
-    <h1 class="text-2xl text-center">Userbar</h1>
-    <h2 class="text-xl text-center">User Images</h2>
+    <div class="flex flex-wrap justify-between bg-slate-300 p-5 my-2">
+      <h2 class="text-2xl flex items-center">User name</h2>
+      <button
+        type="button"
+        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 my-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+      >
+        upload photo
+      </button>
+    </div>
+    <div class="flex flex-wrap justify-center bg-slate-300 my-5 p-5">
+      <img
+        class="h-auto w-auto md:max-w-sm m-2"
+        src="@/assets/image-1.jpg"
+        alt="image description"
+      />
+      <img
+        class="h-auto w-auto md:max-w-sm m-2"
+        src="@/assets/image-1.jpg"
+        alt="image description"
+      />
+      <img
+        class="h-auto w-auto md:max-w-sm m-2"
+        src="@/assets/image-1.jpg"
+        alt="image description"
+      />
+    </div>
   </div>
 </template>
 <script setup lang="ts">

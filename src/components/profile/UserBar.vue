@@ -17,10 +17,11 @@
   </div>
 </template>
 <script setup lang="ts">
-import { type Book } from "@/types/Book";
+import { type userInfo } from "@/types/UserInfo";
 const props = defineProps<{
   username: String;
-  userInfo: Book;
+  userInfo: userInfo;
 }>();
 </script>
 <style></style>
+@/types/UserInfo

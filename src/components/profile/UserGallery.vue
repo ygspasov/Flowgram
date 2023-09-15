@@ -6,17 +6,13 @@
         :src="image.src"
         alt="image description"
       />
-      <!-- <img class="h-auto w-auto md:max-w-sm m-2" src="@/assets/image-1.jpg" alt="image description" />
-    <img class="h-auto w-auto md:max-w-sm m-2" src="@/assets/image-1.jpg" alt="image description" /> -->
     </div>
   </div>
 </template>
 <script setup lang="ts">
-// const props = defineProps({
-//   images: [],
-// });
+import { type Image } from "@/types/Image";
 const props = defineProps<{
-  images: any;
+  images: Image[];
 }>();
 </script>
 <style></style>

@@ -6,16 +6,17 @@
 </template>
 <script setup lang="ts">
 import userBar from "./UserBar.vue";
-import userGallery from "./userGallery.vue";
+import userGallery from "./UserGallery.vue";
 import { ref } from "vue";
-import { type Book } from "@/types/Book";
+import { type userInfo } from "@/types/UserInfo";
+import { type Image } from "@/types/Image";
 const username = ref<String>("John Smith");
-const userInfo = ref<Book>({
+const userInfo = ref<userInfo>({
   posts: 13212,
   followers: 300,
   following: 4120,
 });
-const images = ref<Array<Object>>([
+const images = ref<Image[]>([
   {
     id: 1,
     src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQK7FAD6iKBoksW1wZVqd6f7H4QDAAc1P_IPQ&usqp=CAU",
@@ -31,3 +32,4 @@ const images = ref<Array<Object>>([
 ]);
 </script>
 <style></style>
+@/types/UserInfo

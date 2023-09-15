@@ -5,6 +5,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import SingleProfile from "@/components/SingleProfile.vue";
+import SingleProfile from "@/components/profile/SingleProfile.vue";
 </script>
 <style></style>

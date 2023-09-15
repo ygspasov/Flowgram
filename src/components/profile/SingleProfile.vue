@@ -1,27 +1,12 @@
 <template>
   <div class="">
     <userBar :username="username" :userInfo="userInfo" />
-    <div class="flex flex-wrap justify-between bg-slate-300 my-5 p-5">
-      <img
-        class="h-auto w-auto md:max-w-sm m-2"
-        src="@/assets/image-1.jpg"
-        alt="image description"
-      />
-      <img
-        class="h-auto w-auto md:max-w-sm m-2"
-        src="@/assets/image-1.jpg"
-        alt="image description"
-      />
-      <img
-        class="h-auto w-auto md:max-w-sm m-2"
-        src="@/assets/image-1.jpg"
-        alt="image description"
-      />
-    </div>
+    <userGallery :images="images" />
   </div>
 </template>
 <script setup lang="ts">
 import userBar from "./UserBar.vue";
+import userGallery from "./userGallery.vue";
 import { ref } from "vue";
 import { type Book } from "@/types/Book";
 const username = ref<String>("John Smith");
@@ -30,5 +15,19 @@ const userInfo = ref<Book>({
   followers: 300,
   following: 4120,
 });
+const images = ref<Array<Object>>([
+  {
+    id: 1,
+    src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQK7FAD6iKBoksW1wZVqd6f7H4QDAAc1P_IPQ&usqp=CAU",
+  },
+  {
+    id: 2,
+    src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeF2aLroCeA90WE8M9mm69XHW6lvvT5ZOiCg&usqp=CAU",
+  },
+  {
+    id: 3,
+    src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkAk7_PffPO-dlBo4BNL8Bt76N4dP0x01AAw&usqp=CAU",
+  },
+]);
 </script>
 <style></style>

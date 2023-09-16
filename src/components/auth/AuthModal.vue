@@ -136,10 +136,8 @@ const email: Ref<string> = ref("");
 const password: Ref<string> = ref("");
 
 const auth = getAuth();
-const register = () => {
-  console.log("email,password", email.value, password.value);
-
-  createUserWithEmailAndPassword(auth, email.value, password.value)
+const register = async () => {
+  await createUserWithEmailAndPassword(auth, email.value, password.value)
     .then((userCredential) => {
       const user = userCredential.user;
       console.log("user", user);

@@ -57,6 +57,7 @@
                 >
                 <input
                   v-model="userName"
+                  @blur="v$.userName.$touch"
                   type="name"
                   name="name"
                   id="name"
@@ -64,6 +65,9 @@
                   placeholder="John Smith"
                   required
                 />
+              </div>
+              <div class="bg-red-300 rounded-lg" v-show="!props.isLogin && v$.userName.$error">
+                User name field has an error.
               </div>
               <div>
                 <label
@@ -115,6 +119,7 @@
                 <input
                   v-if="!isLogin"
                   v-model="repeat"
+                  @blur="v$.repeat.$touch"
                   type="password"
                   name="repeat"
                   id="repeat"
@@ -123,7 +128,9 @@
                   required
                 />
               </div>
-
+              <div v-if="!props.isLogin && v$.repeat.$error" class="bg-red-300 rounded-lg">
+                Repeat password field has an error.
+              </div>
               <button
                 @click.prevent="registerOrsignIn"
                 type="submit"
@@ -159,12 +166,6 @@ let userEmail: Ref<string> = ref("");
 let password: Ref<string> = ref("");
 let repeat: Ref<string> = ref("");
 
-const loginRules = {
-  userEmail: { required, email },
-  password: { required },
-};
-const v$ = useVuelidate(loginRules, { userEmail, password });
-console.log("v$", v$);
 const props = defineProps({
   isLogin: {
     type: Boolean,
@@ -173,6 +174,29 @@ const props = defineProps({
 });
 const title: string = props.isLogin ? "Login" : "Sign up";
 const dataModal: string = props.isLogin ? "login" : "signup";
+
+let loginRules = {
+  userEmail: { required, email },
+  password: { required },
+};
+
+let registrationRules = {
+  userName: { required },
+  userEmail: { required, email },
+  password: { required },
+  repeat: { required },
+};
+let rules = {};
+let fields = {};
+if (props.isLogin) {
+  rules = loginRules;
+  fields = { userEmail, password };
+} else {
+  rules = registrationRules;
+  fields = { userEmail, password, userName, repeat };
+}
+const v$ = useVuelidate(rules, fields);
+console.log("v$", v$);
 
 const auth = getAuth();
 const registerOrsignIn = () => {
@@ -190,7 +214,7 @@ const register = async () => {
         store.setUser(user);
         userEmail.value = "";
         password.value = "";
-        userEmail.value = "";
+        userName.value = "";
         repeat.value = "";
       });
     })
@@ -218,6 +242,6 @@ let isDisabled = computed(() => v$.value.$invalid);
 </script>
 <style>
 #modal .disabled {
-  @apply bg-blue-500;
+  @apply bg-gray-500;
 }
 </style>

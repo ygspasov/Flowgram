@@ -45,7 +45,7 @@
           <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">
             {{ title }} to our platform
           </h3>
-          <form class="space-y-6" action="#">
+          <form class="space-y-6 pb-2" action="#">
             <div v-if="!isLogin">
               <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >Your name</label

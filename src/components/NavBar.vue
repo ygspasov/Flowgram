@@ -89,6 +89,14 @@
             <li class="my-2 md:my-0 mx-auto md:mx-0">
               <AuthModal :isLogin="true" />
             </li>
+            <li class="my-2 md:my-0 mx-auto md:mx-0">
+              <button
+                @click="signout"
+                class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Sign out
+              </button>
+            </li>
           </ul>
         </div>
       </div>
@@ -99,8 +107,14 @@
 import { RouterLink } from "vue-router";
 import AuthModal from "./auth/AuthModal.vue";
 import { ref } from "vue";
-import { useRouter } from "vue-router";
 import router from "@/router";
+import { getAuth, signOut } from "firebase/auth";
+const auth = getAuth();
+const signout = () => {
+  signOut(auth)
+    .then(() => {})
+    .catch((error) => {});
+};
 let userName = ref("");
 const onSearch = () => {
   if (userName.value) {

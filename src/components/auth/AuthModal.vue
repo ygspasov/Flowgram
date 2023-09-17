@@ -10,6 +10,7 @@
   </button>
 
   <!-- Main modal -->
+
   <div
     :id="dataModal"
     tabindex="-1"
@@ -45,12 +46,14 @@
           <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">
             {{ title }} to our platform
           </h3>
+
           <form class="space-y-6 pb-2" action="#">
             <div v-if="!isLogin">
               <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >Your name</label
               >
               <input
+                v-model="userName"
                 type="name"
                 name="name"
                 id="name"
@@ -123,7 +126,16 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import type { Ref } from "vue";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { authStore } from "@/stores/auth";
+
+const store = authStore();
+
 const props = defineProps({
   isLogin: {
     type: Boolean,
@@ -132,6 +144,7 @@ const props = defineProps({
 });
 const title: string = props.isLogin ? "Login" : "Sign up";
 const dataModal: string = props.isLogin ? "login" : "signup";
+const userName: Ref<string> = ref("");
 const email: Ref<string> = ref("");
 const password: Ref<string> = ref("");
 
@@ -144,6 +157,11 @@ const register = async () => {
     .then((userCredential) => {
       const user = userCredential.user;
       console.log("user", user);
+      // Update the user's profile to include the username
+      updateProfile(user, {
+        displayName: userName.value, // Replace `username.value` with the actual username
+      });
+      store.setUser(user);
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -154,6 +172,8 @@ const signin = async () => {
   await signInWithEmailAndPassword(auth, email.value, password.value)
     .then((userCredential) => {
       const user = userCredential.user;
+      console.log("user", user);
+      store.setUser(user);
     })
     .catch((error) => {
       const errorCode = error.code;

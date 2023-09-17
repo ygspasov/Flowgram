@@ -83,10 +83,10 @@
           <ul
             class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
           >
-            <li class="my-2 md:my-0 mx-auto md:mx-0">
+            <li v-if="!user" class="my-2 md:my-0 mx-auto md:mx-0">
               <AuthModal :isLogin="false" />
             </li>
-            <li class="my-2 md:my-0 mx-auto md:mx-0">
+            <li v-if="!user" class="my-2 md:my-0 mx-auto md:mx-0">
               <AuthModal :isLogin="true" />
             </li>
             <li class="my-2 md:my-0 mx-auto md:mx-0">
@@ -96,6 +96,9 @@
               >
                 Sign out
               </button>
+            </li>
+            <li v-if="user" class="block text-white rounded-lg text-sm px-5 py-2.5 text-center">
+              {{ user.displayName }}
             </li>
           </ul>
         </div>
@@ -109,9 +112,14 @@ import AuthModal from "./auth/AuthModal.vue";
 import { ref } from "vue";
 import router from "@/router";
 import { getAuth, signOut } from "firebase/auth";
+import { storeToRefs } from "pinia";
+import { authStore } from "@/stores/auth";
+import type { Ref } from "vue";
+const store = authStore();
+const { user } = storeToRefs(store);
 const auth = getAuth();
-const signout = () => {
-  signOut(auth)
+const signout = async () => {
+  await signOut(auth)
     .then(() => {})
     .catch((error) => {});
 };

@@ -66,8 +66,11 @@
                   required
                 />
               </div>
-              <div class="bg-red-300 rounded-lg" v-show="!props.isLogin && v$.userName.$error">
-                User name field has an error.
+              <div
+                class="bg-red-300 rounded-lg px-2 py-1"
+                v-show="!props.isLogin && v$.userName.$error"
+              >
+                Should be least 3 characters in length.
               </div>
               <div>
                 <label
@@ -86,8 +89,8 @@
                   required
                 />
               </div>
-              <div class="bg-red-300 rounded-lg" v-if="v$.userEmail.$error">
-                Email field has an error.
+              <div class="bg-red-300 rounded-lg px-2 py-1" v-if="v$.userEmail.$error">
+                Email field should contain a valid email.
               </div>
 
               <div>
@@ -107,8 +110,8 @@
                   required
                 />
               </div>
-              <div v-if="v$.password.$error" class="bg-red-300 rounded-lg">
-                Password field has an error.
+              <div v-if="v$.password.$error" class="bg-red-300 rounded-lg px-2 py-1">
+                Should be at least 6 characters in length.
               </div>
               <div>
                 <label
@@ -128,8 +131,11 @@
                   required
                 />
               </div>
-              <div v-if="!props.isLogin && v$.repeat.$error" class="bg-red-300 rounded-lg">
-                Repeat password field has an error.
+              <div
+                v-if="!props.isLogin && v$.repeat.$error"
+                class="bg-red-300 rounded-lg px-2 py-1"
+              >
+                Should be the same as Password and at least 6 characters in length.
               </div>
               <button
                 @click.prevent="registerOrsignIn"
@@ -158,7 +164,7 @@ import {
 } from "firebase/auth";
 import { authStore } from "@/stores/auth";
 import { useVuelidate } from "@vuelidate/core";
-import { required, email } from "@vuelidate/validators";
+import { required, email, minLength, sameAs } from "@vuelidate/validators";
 
 const store = authStore();
 let userName: Ref<string> = ref("");
@@ -177,14 +183,14 @@ const dataModal: string = props.isLogin ? "login" : "signup";
 
 let loginRules = {
   userEmail: { required, email },
-  password: { required },
+  password: { required, minLength: minLength(6) },
 };
 
 let registrationRules = {
-  userName: { required },
+  userName: { required, minLength: minLength(3) },
   userEmail: { required, email },
-  password: { required },
-  repeat: { required },
+  password: { required, minLength: minLength(6) },
+  repeat: { required, sameAsPassword: sameAs(password) },
 };
 let rules = {};
 let fields = {};

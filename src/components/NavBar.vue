@@ -83,13 +83,13 @@
           <ul
             class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700"
           >
-            <li v-show="!user" class="my-2 md:my-0 mx-auto md:mx-0">
+            <li v-show="!userLoggedIn" class="my-2 md:my-0 mx-auto md:mx-0">
               <AuthModal :isLogin="false" />
             </li>
-            <li v-show="!user" class="my-2 md:my-0 mx-auto md:mx-0">
+            <li v-show="!userLoggedIn" class="my-2 md:my-0 mx-auto md:mx-0">
               <AuthModal :isLogin="true" />
             </li>
-            <li v-show="user" class="my-2 md:my-0 mx-auto md:mx-0">
+            <li v-show="userLoggedIn" class="my-2 md:my-0 mx-auto md:mx-0">
               <button
                 @click="goToProfile"
                 class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -105,8 +105,11 @@
                 Sign out
               </button>
             </li>
-            <li v-if="user" class="block text-white rounded-lg text-sm px-5 py-2.5 text-center">
-              {{ user.displayName }}
+            <li
+              v-if="userLoggedIn"
+              class="block text-white rounded-lg text-sm px-5 py-2.5 text-center"
+            >
+              {{ store.username }}
             </li>
           </ul>
         </div>
@@ -122,16 +125,16 @@ import router from "@/router";
 import { getAuth, signOut } from "firebase/auth";
 import { storeToRefs } from "pinia";
 import { authStore } from "@/stores/auth";
-import type { Ref } from "vue";
 
 const store = authStore();
-const { user }: any = storeToRefs(store);
+const { userLoggedIn }: any = storeToRefs(store);
 
 const auth = getAuth();
 const signout = async () => {
   await signOut(auth)
     .then(() => {
       store.setUser(null);
+      store.userLoggedIn = false;
     })
     .catch((error) => {});
 };

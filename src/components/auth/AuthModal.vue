@@ -113,14 +113,13 @@
               <div v-if="v$.password.$error" class="bg-red-300 rounded-lg px-2 py-1">
                 Should be at least 6 characters in length.
               </div>
-              <div>
+              <div v-if="!isLogin">
                 <label
                   for="repeat"
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >Repeat password</label
                 >
                 <input
-                  v-if="!isLogin"
                   v-model="repeat"
                   @blur="v$.repeat.$touch"
                   type="password"
@@ -156,12 +155,6 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import type { Ref } from "vue";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  updateProfile,
-} from "firebase/auth";
 import { authStore } from "@/stores/auth";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength, sameAs } from "@vuelidate/validators";
@@ -204,44 +197,22 @@ if (props.isLogin) {
 const v$ = useVuelidate(rules, fields);
 console.log("v$", v$);
 
-const auth = getAuth();
 const registerOrsignIn = () => {
   props.isLogin ? signin() : register();
 };
 const register = async () => {
-  await createUserWithEmailAndPassword(auth, userEmail.value, password.value)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      console.log("user", user);
-      // Update the user's profile to include the username
-      updateProfile(user, {
-        displayName: userName.value,
-      }).then(() => {
-        store.setUser(user);
-        userEmail.value = "";
-        password.value = "";
-        userName.value = "";
-        repeat.value = "";
-      });
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-    });
+  await store.registerUser(userEmail.value, password.value, userName.value).then(() => {
+    userEmail.value = "";
+    password.value = "";
+    userName.value = "";
+    repeat.value = "";
+  });
 };
 const signin = async () => {
-  await signInWithEmailAndPassword(auth, userEmail.value, password.value)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      console.log("user", user);
-      store.setUser(user);
-      userEmail.value = "";
-      password.value = "";
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-    });
+  await store.signInUser(userEmail.value, password.value).then(() => {
+    userEmail.value = "";
+    password.value = "";
+  });
 };
 
 let isDisabled = computed(() => v$.value.$invalid);

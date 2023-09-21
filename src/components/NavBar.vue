@@ -114,7 +114,6 @@ import router from "@/router";
 import { getAuth, signOut } from "firebase/auth";
 import { storeToRefs } from "pinia";
 import { authStore } from "@/stores/auth";
-import type { Ref } from "vue";
 
 const store = authStore();
 const { user }: any = storeToRefs(store);

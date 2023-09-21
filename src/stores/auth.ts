@@ -10,6 +10,8 @@ import {
 export const authStore = defineStore("auth", {
   state: () => ({
     user: ref(null),
+    username: ref(""),
+    userLoggedIn: ref(false),
   }),
   getters: {
     getUser: (state) => state.user,
@@ -25,6 +27,7 @@ export const authStore = defineStore("auth", {
           const user = userCredential.user;
           console.log("user", user);
           this.setUser(user);
+          this.userLoggedIn = true;
           // Update the user's profile to include the username
           updateProfile(user, {
             displayName: userName,
@@ -42,11 +45,16 @@ export const authStore = defineStore("auth", {
           const user = userCredential.user;
           console.log("user", user);
           this.setUser(user);
+          this.userLoggedIn = true;
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
         });
+    },
+    changeLoginState(username) {
+      this.userLoggedIn = true;
+      this.username = username;
     },
   },
 });

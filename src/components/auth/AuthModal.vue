@@ -113,14 +113,13 @@
               <div v-if="v$.password.$error" class="bg-red-300 rounded-lg px-2 py-1">
                 Should be at least 6 characters in length.
               </div>
-              <div>
+              <div v-if="!isLogin">
                 <label
                   for="repeat"
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >Repeat password</label
                 >
                 <input
-                  v-if="!isLogin"
                   v-model="repeat"
                   @blur="v$.repeat.$touch"
                   type="password"

@@ -7,7 +7,6 @@ import { authStore } from "@/stores/auth";
 const store = authStore();
 const auth = getAuth();
 onMounted(() => {
-  console.log("on mounted");
   setTimeout(() => {
     if (auth.currentUser) {
       store.changeLoginState(auth.currentUser.displayName);

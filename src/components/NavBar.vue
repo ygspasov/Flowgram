@@ -97,7 +97,7 @@
                 Profile
               </button>
             </li>
-            <li v-show="user" class="my-2 md:my-0 mx-auto md:mx-0">
+            <li v-show="userLoggedIn" class="my-2 md:my-0 mx-auto md:mx-0">
               <button
                 @click="signout"
                 class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -127,7 +127,7 @@ import { storeToRefs } from "pinia";
 import { authStore } from "@/stores/auth";
 
 const store = authStore();
-const { userLoggedIn }: any = storeToRefs(store);
+const { userLoggedIn, user }: any = storeToRefs(store);
 
 const auth = getAuth();
 const signout = async () => {
@@ -146,7 +146,10 @@ const onSearch = () => {
   }
 };
 const goToProfile = () => {
-  router.push(`/profile/${user.value.displayName}`);
+  if (user) {
+    router.push(`/profile/${user.value.displayName}`);
+  }
 };
+console.log("user", user.value);
 </script>
 <style></style>

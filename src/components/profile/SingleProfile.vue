@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <userBar :username="username" :userInfo="userInfo" />
+    <userBar :username="username" :userInfo="userInfo" :key="$route.params.username" />
     <userGallery :images="images" />
   </div>
 </template>

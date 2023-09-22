@@ -25,7 +25,7 @@ import { authStore } from "@/stores/auth";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
 import { computed, onMounted } from "vue";
-import UploadModal from "./UploadModal.vue";
+import UploadModal from "./UploadPhotoModal.vue";
 const store = authStore();
 const { userLoggedIn }: any = storeToRefs(store);
 const props = defineProps<{

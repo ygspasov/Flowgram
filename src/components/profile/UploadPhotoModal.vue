@@ -27,6 +27,7 @@
             >Upload photo</label
           >
           <input
+            @change="handleUpload($event)"
             class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
             id="file_input"
             type="file"
@@ -58,5 +59,28 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "@/firebase/firebase.js";
+let file = ref("");
+
+const handleUpload = (e: any) => {
+  if (!e.target.files[0]) return;
+  file = e.target.files[0];
+
+  try {
+    uploadPhoto(file);
+  } catch (e) {
+    console.error("Error adding document: ", e);
+  }
+};
+
+const uploadPhoto = async (file: any) => {
+  await setDoc(doc(db, "pictures", file.name), {
+    name: file.name,
+    size: file.size,
+    lastModified: file.lastModified,
+    type: file.type,
+  });
+};
 </script>
 <style></style>

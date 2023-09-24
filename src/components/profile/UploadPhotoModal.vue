@@ -61,6 +61,9 @@
 import { ref } from "vue";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "@/firebase/firebase.js";
+import { getAuth } from "firebase/auth";
+const auth = getAuth();
+console.log("uid", auth.currentUser.uid);
 let file = ref("");
 
 const handleUpload = (e: any) => {

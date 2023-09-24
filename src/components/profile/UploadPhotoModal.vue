@@ -59,7 +59,7 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, collection, addDoc } from "firebase/firestore";
 import { db } from "@/firebase/firebase.js";
 import { getAuth } from "firebase/auth";
 const auth = getAuth();
@@ -76,9 +76,11 @@ const handleUpload = (e: any) => {
     console.error("Error adding document: ", e);
   }
 };
+const picturesCollection = collection(db, "pictures");
 
 const uploadPhoto = async (file: any) => {
-  await setDoc(doc(db, "pictures", file.name), {
+  await addDoc(picturesCollection, {
+    uid: auth.currentUser.uid,
     name: file.name,
     size: file.size,
     lastModified: file.lastModified,

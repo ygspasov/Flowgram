@@ -64,7 +64,7 @@ import { db } from "@/firebase/firebase.js";
 import { getAuth } from "firebase/auth";
 import { getStorage, ref as storageRefference, uploadBytes } from "firebase/storage";
 const storage = getStorage();
-const imagesRef = storageRefference(storage, "images");
+
 const auth = getAuth();
 console.log("uid", auth.currentUser.uid);
 let file = ref("");
@@ -92,7 +92,8 @@ const uploadPhotoData = async (file: any) => {
   });
 };
 const uploadPhoto = async (file: any) => {
-  await uploadBytes(imagesRef, file).then((snapshot) => {
+  const imageRef = storageRefference(storage, `images/${file.name}`);
+  await uploadBytes(imageRef, file).then((snapshot) => {
     console.log("Uploaded a blob or file!");
   });
 };

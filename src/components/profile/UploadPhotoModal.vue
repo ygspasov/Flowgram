@@ -59,9 +59,12 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
-import { doc, setDoc, collection, addDoc } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 import { db } from "@/firebase/firebase.js";
 import { getAuth } from "firebase/auth";
+import { getStorage, ref as storageRefference, uploadBytes } from "firebase/storage";
+const storage = getStorage();
+const imagesRef = storageRefference(storage, "images");
 const auth = getAuth();
 console.log("uid", auth.currentUser.uid);
 let file = ref("");
@@ -71,6 +74,7 @@ const handleUpload = (e: any) => {
   file = e.target.files[0];
 
   try {
+    uploadPhotoData(file);
     uploadPhoto(file);
   } catch (e) {
     console.error("Error adding document: ", e);
@@ -78,13 +82,18 @@ const handleUpload = (e: any) => {
 };
 const picturesCollection = collection(db, "pictures");
 
-const uploadPhoto = async (file: any) => {
+const uploadPhotoData = async (file: any) => {
   await addDoc(picturesCollection, {
     uid: auth.currentUser.uid,
     name: file.name,
     size: file.size,
     lastModified: file.lastModified,
     type: file.type,
+  });
+};
+const uploadPhoto = async (file: any) => {
+  await uploadBytes(imagesRef, file).then((snapshot) => {
+    console.log("Uploaded a blob or file!");
   });
 };
 </script>

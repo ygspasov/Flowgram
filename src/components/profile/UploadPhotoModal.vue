@@ -57,6 +57,17 @@
       </div>
     </div>
   </div>
+  <!-- Success/Error messages -->
+  <div
+    v-if="loading"
+    class="flex items-center justify-center w-full h-10 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
+  >
+    <div
+      class="px-3 py-1 text-xs font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200"
+    >
+      {{ uploadText }}
+    </div>
+  </div>
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
@@ -65,6 +76,8 @@ import { db } from "@/firebase/firebase.js";
 import { getAuth } from "firebase/auth";
 import { getStorage, getDownloadURL, ref as storageReference, uploadBytes } from "firebase/storage";
 const storage = getStorage();
+let loading = ref(false);
+let uploadText = ref("");
 
 const auth = getAuth();
 console.log("uid", auth.currentUser.uid);
@@ -74,34 +87,46 @@ const handleUpload = (e: any) => {
   if (!e.target.files[0]) return;
   file = e.target.files[0];
 };
-const picturesCollection = collection(db, "pictures");
 
-const uploadPhoto = async (file) => {
-  try {
-    // Create a storage reference to the file
-    const imageRef = storageReference(storage, `images/${file.name}`);
+const uploadPhoto = async (file: any) => {
+  loading.value = true;
+  uploadText.value = "Uploading the image";
+  // Create a storage reference to the file
+  const imageRef = storageReference(storage, `images/${file.name}`);
 
-    // Upload the file
-    await uploadBytes(imageRef, file);
+  // Upload the file
+  await uploadBytes(imageRef, file).catch(() => {
+    uploadText.value = "Upload failed";
+    setTimeout(() => {
+      loading.value = false;
+    }, 2000);
+  });
 
-    // Get the download URL
-    const downloadURL = await getDownloadURL(imageRef);
+  // Get the download URL
+  const downloadURL = await getDownloadURL(imageRef);
 
-    // Add the document info with downloadURL
-    const picturesCollection = collection(db, "pictures");
-    await addDoc(picturesCollection, {
-      uid: auth.currentUser.uid,
-      name: file.name,
-      size: file.size,
-      lastModified: file.lastModified,
-      type: file.type,
-      downloadURL: downloadURL,
+  // Add the document info with downloadURL
+  const picturesCollection = collection(db, "posts");
+  await addDoc(picturesCollection, {
+    uid: auth.currentUser.uid,
+    name: file.name,
+    size: file.size,
+    lastModified: file.lastModified,
+    type: file.type,
+    downloadURL: downloadURL,
+  })
+    .then(() => {
+      uploadText.value = "Image added successfully";
+      setTimeout(() => {
+        loading.value = false;
+      }, 2000);
+    })
+    .catch(() => {
+      uploadText.value = "Upload failed";
+      setTimeout(() => {
+        loading.value = false;
+      }, 2000);
     });
-
-    console.log("File uploaded and document added successfully.");
-  } catch (error) {
-    console.error("Error uploading file and adding document:", error);
-  }
 };
 </script>
 <style></style>

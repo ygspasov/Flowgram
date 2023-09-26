@@ -39,6 +39,7 @@
           class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600"
         >
           <button
+            @click="uploadPhoto(file)"
             data-modal-hide="staticModal"
             type="button"
             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -62,7 +63,7 @@ import { ref } from "vue";
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "@/firebase/firebase.js";
 import { getAuth } from "firebase/auth";
-import { getStorage, ref as storageRefference, uploadBytes } from "firebase/storage";
+import { getStorage, getDownloadURL, ref as storageReference, uploadBytes } from "firebase/storage";
 const storage = getStorage();
 
 const auth = getAuth();
@@ -72,30 +73,35 @@ let file = ref("");
 const handleUpload = (e: any) => {
   if (!e.target.files[0]) return;
   file = e.target.files[0];
-
-  try {
-    uploadPhotoData(file);
-    uploadPhoto(file);
-  } catch (e) {
-    console.error("Error adding document: ", e);
-  }
 };
 const picturesCollection = collection(db, "pictures");
 
-const uploadPhotoData = async (file: any) => {
-  await addDoc(picturesCollection, {
-    uid: auth.currentUser.uid,
-    name: file.name,
-    size: file.size,
-    lastModified: file.lastModified,
-    type: file.type,
-  });
-};
-const uploadPhoto = async (file: any) => {
-  const imageRef = storageRefference(storage, `images/${file.name}`);
-  await uploadBytes(imageRef, file).then((snapshot) => {
-    console.log("Uploaded a blob or file!");
-  });
+const uploadPhoto = async (file) => {
+  try {
+    // Create a storage reference to the file
+    const imageRef = storageReference(storage, `images/${file.name}`);
+
+    // Upload the file
+    await uploadBytes(imageRef, file);
+
+    // Get the download URL
+    const downloadURL = await getDownloadURL(imageRef);
+
+    // Add the document info with downloadURL
+    const picturesCollection = collection(db, "pictures");
+    await addDoc(picturesCollection, {
+      uid: auth.currentUser.uid,
+      name: file.name,
+      size: file.size,
+      lastModified: file.lastModified,
+      type: file.type,
+      downloadURL: downloadURL,
+    });
+
+    console.log("File uploaded and document added successfully.");
+  } catch (error) {
+    console.error("Error uploading file and adding document:", error);
+  }
 };
 </script>
 <style></style>

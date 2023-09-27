@@ -10,6 +10,7 @@ import {
 export const authStore = defineStore("auth", {
   state: () => ({
     user: ref(null),
+    userUID: ref(""),
     username: ref(""),
     userLoggedIn: ref(false),
   }),
@@ -19,8 +20,10 @@ export const authStore = defineStore("auth", {
   actions: {
     setUser(user: any) {
       this.user = user;
+      this.userUID = user.uid;
+      console.log("this.userUID", this.userUID);
     },
-    async registerUser(userEmail, password, userName) {
+    async registerUser(userEmail: string, password: string, userName: string) {
       const auth = getAuth();
       await createUserWithEmailAndPassword(auth, userEmail, password)
         .then((userCredential) => {
@@ -38,7 +41,7 @@ export const authStore = defineStore("auth", {
           const errorMessage = error.message;
         });
     },
-    async signInUser(userEmail, password) {
+    async signInUser(userEmail: string, password: string) {
       const auth = getAuth();
       await signInWithEmailAndPassword(auth, userEmail, password)
         .then((userCredential) => {
@@ -52,7 +55,7 @@ export const authStore = defineStore("auth", {
           const errorMessage = error.message;
         });
     },
-    changeLoginState(username) {
+    changeLoginState(username: string) {
       this.userLoggedIn = true;
       this.username = username;
     },

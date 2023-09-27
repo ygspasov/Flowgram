@@ -1,12 +1,11 @@
 <template>
-  <div class="bg-slate-300 flex flex-col md:flex-row justify-between my-5 p-5">
-    <div class="" v-for="image in images" :key="image.id">
-      <span>Name {{ image.name }}</span>
-      <img
-        class="w-auto md:max-w-sm mx-auto mb-5 md:mb-0"
-        :src="image.downloadURL"
-        alt="image description"
-      />
+  <div
+    id="user-profile"
+    class="flex flex-wrap flex-col md:flex-row justify-between bg-slate-300 my-5 p-5"
+  >
+    <div class="mb-5 w-full md:w-1/3" v-for="image in images" :key="image.id">
+      <!-- <span>Name {{ image.name }}</span> -->
+      <img class="w-full max-w-sm" :src="image.downloadURL" alt="image description" />
     </div>
   </div>
 </template>

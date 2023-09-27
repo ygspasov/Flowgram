@@ -8,14 +8,13 @@
 import userBar from "./UserBar.vue";
 import userGallery from "./UserGallery.vue";
 import { ref, onMounted } from "vue";
-import type { Ref } from "vue";
 import { type userInfo } from "@/types/UserInfo";
 import { type Image } from "@/types/Image";
 import { db } from "@/firebase/firebase.js";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 const auth = getAuth();
-const uid = auth.currentUser.uid;
+const uid = localStorage.getItem("uid");
 const username = ref<String>("John Smith");
 const userInfo = ref<userInfo>({
   posts: 13212,

@@ -7,29 +7,34 @@
 <script setup lang="ts">
 import userBar from "./UserBar.vue";
 import userGallery from "./UserGallery.vue";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import type { Ref } from "vue";
 import { type userInfo } from "@/types/UserInfo";
 import { type Image } from "@/types/Image";
+import { db } from "@/firebase/firebase.js";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+const auth = getAuth();
+const uid = auth.currentUser.uid;
 const username = ref<String>("John Smith");
 const userInfo = ref<userInfo>({
   posts: 13212,
   followers: 300,
   following: 4120,
 });
-const images = ref<Image[]>([
-  {
-    id: 1,
-    src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQK7FAD6iKBoksW1wZVqd6f7H4QDAAc1P_IPQ&usqp=CAU",
-  },
-  {
-    id: 2,
-    src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeF2aLroCeA90WE8M9mm69XHW6lvvT5ZOiCg&usqp=CAU",
-  },
-  {
-    id: 3,
-    src: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRkAk7_PffPO-dlBo4BNL8Bt76N4dP0x01AAw&usqp=CAU",
-  },
-]);
+const images = ref<Image[]>([]);
+const getPosts = async () => {
+  const q = query(collection(db, "posts"), where("uid", "==", uid));
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    const el = doc.data();
+    el.id = doc.id;
+    images.value.push(el);
+  });
+};
+
+onMounted(() => {
+  getPosts();
+});
 </script>
 <style></style>
-@/types/UserInfo

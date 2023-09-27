@@ -1,4 +1,9 @@
 export type Image = {
-  id: number;
-  src: string;
+  downloadURL: string;
+  id: string;
+  lastModified: number;
+  name: string;
+  size: number;
+  type: string;
+  uid: string;
 };

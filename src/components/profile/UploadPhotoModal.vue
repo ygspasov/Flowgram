@@ -76,8 +76,8 @@ import { db } from "@/firebase/firebase.js";
 import { getAuth } from "firebase/auth";
 import { getStorage, getDownloadURL, ref as storageReference, uploadBytes } from "firebase/storage";
 const storage = getStorage();
-let loading = ref(false);
-let uploadText = ref("");
+let loading = ref<Boolean>(false);
+let uploadText = ref<String>("");
 
 const auth = getAuth();
 console.log("uid", auth.currentUser.uid);

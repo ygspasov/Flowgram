@@ -28,6 +28,7 @@ export const authStore = defineStore("auth", {
       await createUserWithEmailAndPassword(auth, userEmail, password)
         .then((userCredential) => {
           const user = userCredential.user;
+          this.username = user.displayName;
           console.log("user", user);
           this.setUser(user);
           this.userLoggedIn = true;

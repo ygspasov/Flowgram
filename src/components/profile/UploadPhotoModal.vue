@@ -72,15 +72,19 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { collection, addDoc } from "firebase/firestore";
+// @ts-ignore
 import { db } from "@/firebase/firebase.js";
 import { getAuth } from "firebase/auth";
 import { getStorage, getDownloadURL, ref as storageReference, uploadBytes } from "firebase/storage";
+import { postsStore } from "@/stores/posts";
+const store = postsStore();
+
 const storage = getStorage();
 let loading = ref<Boolean>(false);
 let uploadText = ref<String>("");
 
 const auth = getAuth();
-console.log("uid", auth.currentUser.uid);
+const uid = localStorage.getItem("uid");
 let file = ref("");
 
 const handleUpload = (e: any) => {
@@ -108,15 +112,16 @@ const uploadPhoto = async (file: any) => {
   // Add the document info with downloadURL
   const picturesCollection = collection(db, "posts");
   await addDoc(picturesCollection, {
-    uid: auth.currentUser.uid,
+    uid,
     name: file.name,
     size: file.size,
     lastModified: file.lastModified,
     type: file.type,
-    downloadURL: downloadURL,
+    downloadURL,
   })
     .then(() => {
       uploadText.value = "Image added successfully";
+      store.setPostsLoading(true);
       setTimeout(() => {
         loading.value = false;
       }, 2000);

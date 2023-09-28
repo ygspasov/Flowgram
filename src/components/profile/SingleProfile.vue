@@ -13,7 +13,6 @@ import { type Image } from "@/types/Image";
 // @ts-ignore
 import { db } from "@/firebase/firebase.js";
 import { collection, query, where, getDocs } from "firebase/firestore";
-
 import { postsStore } from "@/stores/posts";
 import { storeToRefs } from "pinia";
 

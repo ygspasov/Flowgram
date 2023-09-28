@@ -127,7 +127,7 @@ import { storeToRefs } from "pinia";
 import { authStore } from "@/stores/auth";
 
 const store = authStore();
-const { userLoggedIn, user }: any = storeToRefs(store);
+const { userLoggedIn, user, username }: any = storeToRefs(store);
 
 const auth = getAuth();
 const signout = async () => {
@@ -148,9 +148,8 @@ const onSearch = () => {
 };
 const goToProfile = () => {
   if (user) {
-    router.push(`/profile/${user.value.displayName}`);
+    router.push(`/profile/${username.value.toLowerCase()}`);
   }
 };
-console.log("user", user.value);
 </script>
 <style></style>

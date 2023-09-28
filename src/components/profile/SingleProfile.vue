@@ -7,13 +7,25 @@
 <script setup lang="ts">
 import userBar from "./UserBar.vue";
 import userGallery from "./UserGallery.vue";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import { type userInfo } from "@/types/UserInfo";
 import { type Image } from "@/types/Image";
+// @ts-ignore
 import { db } from "@/firebase/firebase.js";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
-const auth = getAuth();
+
+import { postsStore } from "@/stores/posts";
+import { storeToRefs } from "pinia";
+
+const store = postsStore();
+const { loadPosts }: any = storeToRefs(store);
+watch(loadPosts, (newVal) => {
+  if (newVal) {
+    images.value = [];
+    getPosts();
+  }
+});
+
 const uid = localStorage.getItem("uid");
 const username = ref<String>("John Smith");
 const userInfo = ref<userInfo>({
@@ -21,14 +33,16 @@ const userInfo = ref<userInfo>({
   followers: 300,
   following: 4120,
 });
-const images = ref<Image[]>([]);
+let images = ref<Image[]>([]);
 const getPosts = async () => {
   const q = query(collection(db, "posts"), where("uid", "==", uid));
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
     const el = doc.data();
     el.id = doc.id;
+    // @ts-ignore
     images.value.push(el);
+    store.setPostsLoading(false);
   });
 };
 

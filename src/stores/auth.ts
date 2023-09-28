@@ -49,6 +49,7 @@ export const authStore = defineStore("auth", {
           console.log("user", user);
           this.setUser(user);
           this.userLoggedIn = true;
+          this.username = user.displayName;
           localStorage.setItem("uid", user.uid);
         })
         .catch((error) => {

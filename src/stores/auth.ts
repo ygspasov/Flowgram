@@ -32,13 +32,16 @@ export const authStore = defineStore("auth", {
           console.log("user", user);
           this.setUser(user);
           this.userLoggedIn = true;
-          localStorage.setItem("uid", user.uid);
-          localStorage.setItem("username", user.displayName);
           // Update the user's profile to include the username
           updateProfile(user, {
             displayName: userName,
+          }).then(() => {
+            localStorage.setItem("uid", user.uid);
+            localStorage.setItem("username", user.displayName);
+            this.setLoginState(user.displayName, user.uid);
           });
         })
+
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;

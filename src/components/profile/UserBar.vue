@@ -1,7 +1,9 @@
 <template>
   <div class="bg-slate-300 my-2">
     <div class="flex flex-wrap justify-between p-5">
-      <h2 class="text-2xl flex items-center">{{ props.username }}</h2>
+      <h2 class="text-2xl flex items-center">
+        {{ capitalizedUsername }}
+      </h2>
       <!-- <button
         v-if="userCheck"
         type="button"
@@ -33,11 +35,15 @@ const props = defineProps<{
   userInfo: userInfo;
 }>();
 const route = useRoute();
-const { username: profileUsername } = route.params;
+let { username: profileUsername } = route.params;
+
 let { username } = storeToRefs(store);
 const authUsername: string = username.value.toLowerCase();
 //Checking if the user profile belongs to the user in order to enable the upload
 const userCheck = computed(() => userLoggedIn && profileUsername === authUsername);
+const capitalizedUsername = computed(
+  () => props.username.charAt(0).toUpperCase() + props.username.slice(1)
+);
 onMounted(() => {
   initFlowbite();
 });

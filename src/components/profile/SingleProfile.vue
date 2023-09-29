@@ -1,6 +1,10 @@
 <template>
   <div class="">
-    <userBar :username="username" :userInfo="userInfo" :key="$route.params.username" />
+    <userBar
+      :username="$route.params.username"
+      :userInfo="userInfo"
+      :key="$route.params.username"
+    />
     <userGallery :images="images" />
   </div>
 </template>
@@ -24,9 +28,7 @@ watch(loadPosts, (newVal) => {
     getPosts();
   }
 });
-
 const uid = localStorage.getItem("uid");
-const username = ref<String>("John Smith");
 const userInfo = ref<userInfo>({
   posts: 13212,
   followers: 300,

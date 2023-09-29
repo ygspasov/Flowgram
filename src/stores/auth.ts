@@ -32,6 +32,8 @@ export const authStore = defineStore("auth", {
           console.log("user", user);
           this.setUser(user);
           this.userLoggedIn = true;
+          localStorage.setItem("uid", user.uid);
+          localStorage.setItem("username", user.displayName);
           // Update the user's profile to include the username
           updateProfile(user, {
             displayName: userName,
@@ -52,15 +54,22 @@ export const authStore = defineStore("auth", {
           this.userLoggedIn = true;
           this.username = user.displayName;
           localStorage.setItem("uid", user.uid);
+          localStorage.setItem("username", user.displayName);
         })
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
         });
     },
-    changeLoginState(username: string) {
-      this.userLoggedIn = true;
+    setLoginState(username: string, uid: string) {
       this.username = username;
+      this.uid = uid;
+      this.userLoggedIn = true;
+    },
+    setSignOut() {
+      this.userLoggedIn = false;
+      localStorage.removeItem("uid");
+      localStorage.removeItem("username");
     },
   },
 });

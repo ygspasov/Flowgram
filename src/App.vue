@@ -1,10 +1,18 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
 import Navbar from "@/components/NavBar.vue";
+import { onMounted } from "vue";
 import { getAuth } from "firebase/auth";
 import { authStore } from "@/stores/auth";
 const store = authStore();
 const auth = getAuth();
+const username = localStorage.getItem("username");
+const uid = localStorage.getItem("uid");
+onMounted(() => {
+  if (username && uid) {
+    store.setLoginState(username, uid);
+  }
+});
 </script>
 
 <template>

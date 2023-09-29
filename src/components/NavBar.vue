@@ -134,7 +134,7 @@ const signout = async () => {
   await signOut(auth)
     .then(() => {
       localStorage.removeItem("uid");
-      store.userLoggedIn = false;
+      store.setSignOut();
     })
     .catch((error) => {});
 };

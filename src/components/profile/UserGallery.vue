@@ -31,7 +31,7 @@ let profileUsername = reactive({
 let { username } = storeToRefs(store);
 const authUsername: string = username.value.toLowerCase();
 //Checking if the user profile belongs to the user in order to show user content
-const userCheck = computed(() => userLoggedIn && profileUsername.value === authUsername);
+const userCheck = computed(() => userLoggedIn);
 const props = defineProps<{
   images: Image[];
 }>();

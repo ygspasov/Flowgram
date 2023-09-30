@@ -6,6 +6,9 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
+// @ts-ignore
+import { db } from "@/firebase/firebase.js";
+import { doc, setDoc } from "firebase/firestore";
 
 export const authStore = defineStore("auth", {
   state: () => ({
@@ -35,10 +38,14 @@ export const authStore = defineStore("auth", {
           // Update the user's profile to include the username
           updateProfile(user, {
             displayName: userName,
-          }).then(() => {
+          }).then(async () => {
             localStorage.setItem("uid", user.uid);
             localStorage.setItem("username", user.displayName);
             this.setLoginState(user.displayName, user.uid);
+            //Link the username to the id
+            await setDoc(doc(db, "usernameToUID", this.username.toLowerCase()), {
+              uid: this.userUID,
+            });
           });
         })
 

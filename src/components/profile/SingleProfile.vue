@@ -16,10 +16,13 @@ import { type userInfo } from "@/types/UserInfo";
 import { type Image } from "@/types/Image";
 // @ts-ignore
 import { db } from "@/firebase/firebase.js";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, doc, getDoc } from "firebase/firestore";
 import { postsStore } from "@/stores/posts";
 import { storeToRefs } from "pinia";
-
+import { useRoute } from "vue-router";
+const route = useRoute();
+const username = route.params.username;
+console.log("username", username);
 const store = postsStore();
 const { loadPosts }: any = storeToRefs(store);
 watch(loadPosts, (newVal) => {
@@ -28,7 +31,34 @@ watch(loadPosts, (newVal) => {
     getPosts();
   }
 });
-const uid = localStorage.getItem("uid");
+
+//Retrieving the UID associated with the name of the user
+
+let docSnap: any;
+let profileUID: any;
+
+const getProfileUID = async () => {
+  const profileUIDRef = doc(db, "usernameToUID", username);
+
+  await getDoc(profileUIDRef)
+    .then((snapshot) => {
+      docSnap = snapshot;
+      if (docSnap.exists()) {
+        profileUID = docSnap.data().uid;
+        console.log("profileUID:", profileUID);
+      } else {
+        console.log("No such document!");
+      }
+    })
+    .then(() => {
+      getPosts();
+    })
+    .catch((error) => {
+      console.error("Error getting document:", error);
+    });
+};
+
+// const uid = localStorage.getItem("uid");
 const userInfo = ref<userInfo>({
   posts: 13212,
   followers: 300,
@@ -36,7 +66,7 @@ const userInfo = ref<userInfo>({
 });
 let images = ref<Image[]>([]);
 const getPosts = async () => {
-  const q = query(collection(db, "posts"), where("uid", "==", uid));
+  const q = query(collection(db, "posts"), where("uid", "==", profileUID));
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
     const el = doc.data();
@@ -48,7 +78,7 @@ const getPosts = async () => {
 };
 
 onMounted(() => {
-  getPosts();
+  getProfileUID();
 });
 </script>
 <style></style>

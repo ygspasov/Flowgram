@@ -1,6 +1,5 @@
 <template>
-  <div class="">
-    <h1 class="text-2xl text-center my-2">UserProfile</h1>
+  <div class="my-5">
     <SingleProfile />
   </div>
 </template>

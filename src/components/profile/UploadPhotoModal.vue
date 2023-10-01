@@ -93,6 +93,7 @@ const handleUpload = (e: any) => {
 };
 
 const uploadPhoto = async (file: any) => {
+  if (!file) return;
   loading.value = true;
   uploadText.value = "Uploading the image";
   // Create a storage reference to the file

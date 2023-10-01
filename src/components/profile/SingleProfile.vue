@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="" :key="componentKey">
     <userBar
       :username="$route.params.username"
       :userInfo="userInfo"
@@ -20,9 +20,16 @@ import { collection, query, where, getDocs, doc, getDoc } from "firebase/firesto
 import { postsStore } from "@/stores/posts";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
+let images = ref<Image[]>([]);
 const route = useRoute();
-const username = route.params.username;
-console.log("username", username);
+const componentKey = ref(route.fullPath);
+watch(route, () => {
+  //watching for changes in the router parameter(username) and updating the profile images
+  componentKey.value = route.fullPath;
+  images = ref<Image[]>([]);
+  getProfileUID();
+});
+
 const store = postsStore();
 const { loadPosts }: any = storeToRefs(store);
 watch(loadPosts, (newVal) => {
@@ -38,6 +45,8 @@ let docSnap: any;
 let profileUID: any;
 
 const getProfileUID = async () => {
+  const username = route.params.username;
+  console.log("username", username);
   const profileUIDRef = doc(db, "usernameToUID", username);
 
   await getDoc(profileUIDRef)
@@ -64,7 +73,7 @@ const userInfo = ref<userInfo>({
   followers: 300,
   following: 4120,
 });
-let images = ref<Image[]>([]);
+
 const getPosts = async () => {
   const q = query(collection(db, "posts"), where("uid", "==", profileUID));
   const querySnapshot = await getDocs(q);

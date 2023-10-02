@@ -141,7 +141,7 @@ const signout = async () => {
 let userName = ref("");
 const onSearch = () => {
   if (userName.value) {
-    router.push(`/profile/${userName.value}`);
+    router.push(`/profile/${userName.value.toLowerCase()}`);
     userName.value = "";
   }
 };

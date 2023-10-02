@@ -55,6 +55,7 @@ const getProfileUID = async () => {
       if (docSnap.exists()) {
         profileUID = docSnap.data().uid;
         console.log("profileUID:", profileUID);
+        store.setProfileUID(profileUID);
       } else {
         console.log("No such document!");
       }
@@ -67,7 +68,6 @@ const getProfileUID = async () => {
     });
 };
 
-// const uid = localStorage.getItem("uid");
 const userInfo = ref<userInfo>({
   posts: 13212,
   followers: 300,

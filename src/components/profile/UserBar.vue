@@ -14,6 +14,7 @@
       <div id="buttonGroup" class="flex flex-col">
         <UploadModal v-if="userCheck" />
         <button
+          @click="followUser"
           v-if="followCheck"
           class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 my-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
           type="button"
@@ -37,15 +38,17 @@ import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
 import { computed, onMounted } from "vue";
 import UploadModal from "./UploadPhotoModal.vue";
+import { postsStore } from "@/stores/posts";
 const store = authStore();
 const { userLoggedIn }: any = storeToRefs(store);
+const posts_Store = postsStore();
+
 const props = defineProps<{
   username: String;
   userInfo: userInfo;
 }>();
 const route = useRoute();
 let { username: profileUsername } = route.params;
-
 let { username } = storeToRefs(store);
 const authUsername: string = username.value.toLowerCase();
 //Checking if the user profile belongs to the user in order to enable the upload
@@ -54,6 +57,10 @@ const followCheck = computed(() => userLoggedIn.value && profileUsername !== aut
 const capitalizedUsername = computed(
   () => props.username.charAt(0).toUpperCase() + props.username.slice(1)
 );
+const followerUid: string | null = localStorage.getItem("uid");
+const followUser = () => {
+  posts_Store.SetFollowUser(followerUid);
+};
 onMounted(() => {
   initFlowbite();
 });

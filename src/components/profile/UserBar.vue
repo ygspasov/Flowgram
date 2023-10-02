@@ -49,8 +49,8 @@ let { username: profileUsername } = route.params;
 let { username } = storeToRefs(store);
 const authUsername: string = username.value.toLowerCase();
 //Checking if the user profile belongs to the user in order to enable the upload
-const userCheck = computed(() => userLoggedIn && profileUsername === authUsername);
-const followCheck = computed(() => userLoggedIn && profileUsername !== authUsername);
+const userCheck = computed(() => userLoggedIn.value && profileUsername === authUsername);
+const followCheck = computed(() => userLoggedIn.value && profileUsername !== authUsername);
 const capitalizedUsername = computed(
   () => props.username.charAt(0).toUpperCase() + props.username.slice(1)
 );

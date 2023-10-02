@@ -18,9 +18,7 @@ let username = route.params.username;
 const userExists = ref(true);
 watch(route, () => {
   //watching for changes in the router parameter(username) and updating the profile images
-  console.log("watcher running");
   username = route.params.username;
-  console.log("username from router", username);
   checkUsernameExists(username);
 });
 

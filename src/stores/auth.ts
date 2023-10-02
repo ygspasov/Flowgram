@@ -9,6 +9,7 @@ import {
 // @ts-ignore
 import { db } from "@/firebase/firebase.js";
 import { doc, setDoc } from "firebase/firestore";
+import router from "@/router";
 
 export const authStore = defineStore("auth", {
   state: () => ({
@@ -42,6 +43,7 @@ export const authStore = defineStore("auth", {
             localStorage.setItem("uid", user.uid);
             localStorage.setItem("username", user.displayName);
             this.setLoginState(user.displayName, user.uid);
+            router.push("/");
             //Link the username to the id
             await setDoc(doc(db, "usernameToUID", this.username.toLowerCase()), {
               uid: this.userUID,
@@ -65,6 +67,7 @@ export const authStore = defineStore("auth", {
           this.username = user.displayName;
           localStorage.setItem("uid", user.uid);
           localStorage.setItem("username", user.displayName);
+          router.push("/");
         })
         .catch((error) => {
           const errorCode = error.code;

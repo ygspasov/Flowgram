@@ -31,7 +31,7 @@ watch(route, () => {
 });
 
 const store = postsStore();
-const { loadPosts }: any = storeToRefs(store);
+const { loadPosts, numberOfFollowers }: any = storeToRefs(store);
 watch(loadPosts, (newVal) => {
   if (newVal) {
     images.value = [];
@@ -70,7 +70,7 @@ const getProfileUID = async () => {
 
 const userInfo = ref<userInfo>({
   posts: 13212,
-  followers: 300,
+  followers: numberOfFollowers,
   following: 4120,
 });
 

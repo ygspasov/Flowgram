@@ -7,6 +7,7 @@ const followeesFollowersCollection = "followeesFollowers";
 export const postsStore = defineStore("posts", {
   state: () => ({
     profileUID: ref(""),
+    numberOfFollowers: ref(0),
     loadPosts: ref(false),
   }),
   getters: {},
@@ -40,6 +41,8 @@ export const postsStore = defineStore("posts", {
         const querySnapshot = await getDocs(followeesFollowersRef);
         const followers = querySnapshot.docs.map((doc) => doc.id);
         console.log(`Followers of user with UID ${uid}:`, followers);
+        this.numberOfFollowers = followers.length;
+        console.log("number of followers", this.numberOfFollowers);
       } catch (error) {
         console.error("Error getting followers:", error);
       }

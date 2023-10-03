@@ -42,7 +42,7 @@ import { postsStore } from "@/stores/posts";
 const store = authStore();
 const { userLoggedIn }: any = storeToRefs(store);
 const posts_Store = postsStore();
-
+const { profileUID }: any = storeToRefs(posts_Store);
 const props = defineProps<{
   username: String;
   userInfo: userInfo;
@@ -59,10 +59,13 @@ const capitalizedUsername = computed(
 );
 const followerUid: string | null = localStorage.getItem("uid");
 const followUser = () => {
-  posts_Store.SetFollowUser(followerUid);
+  posts_Store.setFollowUser(followerUid);
 };
 onMounted(() => {
   initFlowbite();
+  setTimeout(() => {
+    posts_Store.getFollowers(profileUID.value);
+  }, 1500);
 });
 </script>
 <style></style>

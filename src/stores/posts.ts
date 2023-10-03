@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDocs, collection } from "firebase/firestore";
 // @ts-ignore
 import { db } from "@/firebase/firebase";
-
+const followeesFollowersCollection = "followeesFollowers";
 export const postsStore = defineStore("posts", {
   state: () => ({
     profileUID: ref(""),
@@ -17,15 +17,31 @@ export const postsStore = defineStore("posts", {
     setProfileUID(val: string) {
       this.profileUID = val;
     },
-    async SetFollowUser(followerUid: any) {
+    async setFollowUser(followerUid: string) {
       const followeeUid = this.profileUID;
-      const followsRef = doc(db, "followee_follower", followeeUid);
+      const followeesFollowersRef = doc(db, `${followeesFollowersCollection}/${followeeUid}`);
+      const followersCollectionRef = collection(followeesFollowersRef, "followers");
 
       try {
-        await setDoc(followsRef, { [followerUid]: true }, { merge: true });
+        await setDoc(doc(followersCollectionRef, followerUid), { followed: true });
         console.log(`User with UID ${followerUid} is now following user with UID ${followeeUid}`);
       } catch (error) {
         console.error("Error following user:", error);
+      }
+    },
+    async getFollowers(uid: string) {
+      console.log("getFollowers uid", uid);
+      const followeesFollowersRef = collection(
+        db,
+        `${followeesFollowersCollection}/${uid}/followers`
+      );
+
+      try {
+        const querySnapshot = await getDocs(followeesFollowersRef);
+        const followers = querySnapshot.docs.map((doc) => doc.id);
+        console.log(`Followers of user with UID ${uid}:`, followers);
+      } catch (error) {
+        console.error("Error getting followers:", error);
       }
     },
   },

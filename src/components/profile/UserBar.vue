@@ -66,15 +66,25 @@ const capitalizedUsername = computed(
   () => props.username.charAt(0).toUpperCase() + props.username.slice(1)
 );
 const followerUid: string | null = localStorage.getItem("uid");
-const followUser = () => {
-  posts_Store.setFollowUser(followerUid, true);
-  // Update profileIsFollowed based on the follow action
-  posts_Store.fetchFollowing(profileUID.value, followerUid);
+const emit = defineEmits(["followAction"]);
+const followUser = async () => {
+  try {
+    await posts_Store.setFollowUser(followerUid, true);
+    await posts_Store.fetchFollowing(profileUID.value, followerUid);
+    emit("followAction", true); // Signal success, increment count
+  } catch (error) {
+    console.error("Failed to follow user:", error);
+  }
 };
-const unFollowUser = () => {
-  posts_Store.setFollowUser(followerUid, false);
-  // Update profileIsFollowed based on the follow action
-  posts_Store.fetchFollowing(profileUID.value, followerUid);
+
+const unFollowUser = async () => {
+  try {
+    await posts_Store.setFollowUser(followerUid, false);
+    await posts_Store.fetchFollowing(profileUID.value, followerUid);
+    emit("followAction", false); // Signal success, decrement count
+  } catch (error) {
+    console.error("Failed to unfollow user:", error);
+  }
 };
 const getFollowingState = () => {
   posts_Store.fetchFollowing(profileUID.value, followerUid);

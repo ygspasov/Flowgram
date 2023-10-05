@@ -4,6 +4,7 @@
       :username="$route.params.username"
       :userInfo="userInfo"
       :key="$route.params.username"
+      @followAction="followAction"
     />
     <userGallery :images="images" />
   </div>
@@ -84,6 +85,11 @@ const getPosts = async () => {
     images.value.push(el);
     store.setPostsLoading(false);
   });
+};
+
+const followAction = (val: boolean) => {
+  console.log("followAction", val);
+  val ? (userInfo.value.followers += 1) : (userInfo.value.followers -= 1);
 };
 
 onMounted(() => {

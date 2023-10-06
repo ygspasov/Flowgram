@@ -125,8 +125,10 @@ import router from "@/router";
 import { getAuth, signOut } from "firebase/auth";
 import { storeToRefs } from "pinia";
 import { authStore } from "@/stores/auth";
+import { postsStore } from "@/stores/posts";
 
 const store = authStore();
+const posts_Store = postsStore();
 const { userLoggedIn, user, username }: any = storeToRefs(store);
 
 const auth = getAuth();
@@ -135,6 +137,7 @@ const signout = async () => {
     .then(() => {
       localStorage.removeItem("uid");
       store.setSignOut();
+      posts_Store.setClearImages();
     })
     .catch((error) => {});
 };

@@ -13,6 +13,7 @@ export const postsStore = defineStore("posts", {
     loadPosts: ref(false),
     profileIsFollowed: ref(false),
     images: ref<Image[]>([]),
+    numberOfPosts: ref(0),
   }),
   getters: {},
   actions: {
@@ -23,7 +24,7 @@ export const postsStore = defineStore("posts", {
         const el = doc.data();
         el.id = doc.id;
         this.images.push(el);
-        console.log("images", this.images);
+        this.numberOfPosts = this.images.length;
         this.setPostsLoading(false);
       });
     },

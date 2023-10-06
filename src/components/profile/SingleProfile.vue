@@ -20,7 +20,6 @@ import { doc, getDoc } from "firebase/firestore";
 import { postsStore } from "@/stores/posts";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
-// let images = ref<Image[]>([]);
 const route = useRoute();
 const componentKey = ref(route.fullPath);
 const store = postsStore();
@@ -31,7 +30,8 @@ watch(route, () => {
   getProfileUID();
 });
 
-const { loadPosts, numberOfFollowers, numberOfFollowing, images }: any = storeToRefs(store);
+const { loadPosts, numberOfFollowers, numberOfFollowing, images, numberOfPosts }: any =
+  storeToRefs(store);
 watch(loadPosts, (newVal) => {
   if (newVal) {
     store.setClearImages();
@@ -69,7 +69,7 @@ const getProfileUID = async () => {
 };
 
 const userInfo = ref<userInfo>({
-  posts: 13212,
+  posts: numberOfPosts,
   followers: numberOfFollowers,
   following: numberOfFollowing,
 });

@@ -14,28 +14,27 @@ import userBar from "./UserBar.vue";
 import userGallery from "./UserGallery.vue";
 import { ref, onMounted, watch } from "vue";
 import { type userInfo } from "@/types/UserInfo";
-import { type Image } from "@/types/Image";
 // @ts-ignore
 import { db } from "@/firebase/firebase.js";
-import { collection, query, where, getDocs, doc, getDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { postsStore } from "@/stores/posts";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
-let images = ref<Image[]>([]);
+// let images = ref<Image[]>([]);
 const route = useRoute();
 const componentKey = ref(route.fullPath);
+const store = postsStore();
 watch(route, () => {
   //watching for changes in the router parameter(username) and updating the profile images
   componentKey.value = route.fullPath;
-  images = ref<Image[]>([]);
+  store.setClearImages();
   getProfileUID();
 });
 
-const store = postsStore();
-const { loadPosts, numberOfFollowers, numberOfFollowing }: any = storeToRefs(store);
+const { loadPosts, numberOfFollowers, numberOfFollowing, images }: any = storeToRefs(store);
 watch(loadPosts, (newVal) => {
   if (newVal) {
-    images.value = [];
+    store.setClearImages();
     getPosts();
   }
 });
@@ -76,15 +75,7 @@ const userInfo = ref<userInfo>({
 });
 
 const getPosts = async () => {
-  const q = query(collection(db, "posts"), where("uid", "==", profileUID));
-  const querySnapshot = await getDocs(q);
-  querySnapshot.forEach((doc) => {
-    const el = doc.data();
-    el.id = doc.id;
-    // @ts-ignore
-    images.value.push(el);
-    store.setPostsLoading(false);
-  });
+  await store.setPosts(profileUID);
 };
 
 const followAction = (val: boolean) => {

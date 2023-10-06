@@ -8,6 +8,7 @@ export const postsStore = defineStore("posts", {
   state: () => ({
     profileUID: ref(""),
     numberOfFollowers: ref(0),
+    numberOfFollowing: ref(0),
     loadPosts: ref(false),
     profileIsFollowed: ref(false),
   }),
@@ -76,7 +77,7 @@ export const postsStore = defineStore("posts", {
         console.error("Error getting followers:", error);
       }
     },
-    async fetchFollowing(followeeId: string, followerId: string) {
+    async fetchFollowers(followeeId: string, followerId: string) {
       const followersRef = collection(db, `followeesFollowers/${followeeId}/followers`);
       const followersQuery = query(followersRef, where("followed", "==", true));
 
@@ -87,6 +88,20 @@ export const postsStore = defineStore("posts", {
         this.setProfileIsFollowed(isFollowed); // Update the state
       } catch (error) {
         console.error("Error getting followers:", error);
+        throw error;
+      }
+    },
+    async fetchFollowing(followeeId: string) {
+      const followingRef = collection(db, `following/${followeeId}/following`);
+      const followingQuery = query(followingRef, where("followed", "==", true));
+      try {
+        const querySnapshot = await getDocs(followingQuery);
+        const following = querySnapshot.docs.map((doc) => doc.id);
+        console.log("following", following);
+        this.numberOfFollowing = following.length;
+        console.log("number of people following", this.numberOfFollowing);
+      } catch (error) {
+        console.error("Error getting number of people following:", error);
         throw error;
       }
     },

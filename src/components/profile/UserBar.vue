@@ -70,7 +70,7 @@ const emit = defineEmits(["followAction"]);
 const followUser = async () => {
   try {
     await posts_Store.setFollowUser(followerUid, true);
-    await posts_Store.fetchFollowing(profileUID.value, followerUid);
+    await posts_Store.fetchFollowers(profileUID.value, followerUid);
     emit("followAction", true); // Signal success, increment count
   } catch (error) {
     console.error("Failed to follow user:", error);
@@ -80,14 +80,14 @@ const followUser = async () => {
 const unFollowUser = async () => {
   try {
     await posts_Store.setFollowUser(followerUid, false);
-    await posts_Store.fetchFollowing(profileUID.value, followerUid);
+    await posts_Store.fetchFollowers(profileUID.value, followerUid);
     emit("followAction", false); // Signal success, decrement count
   } catch (error) {
     console.error("Failed to unfollow user:", error);
   }
 };
 const getFollowingState = () => {
-  posts_Store.fetchFollowing(profileUID.value, followerUid);
+  posts_Store.fetchFollowers(profileUID.value, followerUid);
 };
 const profileIsFollowedComputed = computed(() => profileIsFollowed.value);
 watch(profileIsFollowedComputed, (newValue) => {
@@ -98,6 +98,7 @@ onMounted(() => {
   setTimeout(() => {
     posts_Store.getFollowers(profileUID.value);
     getFollowingState();
+    posts_Store.fetchFollowing(profileUID.value);
   }, 1500);
 });
 </script>

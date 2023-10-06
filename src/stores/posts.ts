@@ -35,6 +35,26 @@ export const postsStore = defineStore("posts", {
       } catch (error) {
         console.error("Error following user:", error);
       }
+
+      const followingCollection = "following";
+      const followingRef = doc(db, `${followingCollection}/${followerUid}`);
+      const followingCollectionRef = collection(followingRef, "following");
+
+      try {
+        if (followOrUnfollow) {
+          await setDoc(doc(followingCollectionRef, followeeUid), { followed: true });
+          console.log(
+            `User with UID ${followeeUid} is being followed by user with UID ${followerUid}`
+          );
+        } else {
+          await setDoc(doc(followingCollectionRef, followeeUid), { followed: false });
+          console.log(
+            `User with UID ${followeeUid} is no longer being followed by user with UID ${followerUid}`
+          );
+        }
+      } catch (error) {
+        console.error("Error following user:", error);
+      }
     },
     async getFollowers(uid: string) {
       console.log("getFollowers uid", uid);

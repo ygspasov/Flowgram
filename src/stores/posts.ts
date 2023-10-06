@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { doc, setDoc, getDocs, collection, query, where } from "firebase/firestore";
 // @ts-ignore
 import { db } from "@/firebase/firebase";
+import { type Image } from "@/types/Image";
 const followeesFollowersCollection = "followeesFollowers";
 export const postsStore = defineStore("posts", {
   state: () => ({
@@ -11,9 +12,22 @@ export const postsStore = defineStore("posts", {
     numberOfFollowing: ref(0),
     loadPosts: ref(false),
     profileIsFollowed: ref(false),
+    images: ref<Image[]>([]),
   }),
   getters: {},
   actions: {
+    async setPosts(profileUID: string) {
+      const q = query(collection(db, "posts"), where("uid", "==", profileUID));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        const el = doc.data();
+        el.id = doc.id;
+        this.images.push(el);
+        console.log("images", this.images);
+        this.setPostsLoading(false);
+      });
+    },
+
     setPostsLoading(val: boolean) {
       this.loadPosts = val;
     },
@@ -108,6 +122,10 @@ export const postsStore = defineStore("posts", {
 
     setProfileIsFollowed(val: boolean) {
       this.profileIsFollowed = val;
+    },
+
+    setClearImages() {
+      this.images = [];
     },
   },
 });

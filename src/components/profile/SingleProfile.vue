@@ -45,6 +45,7 @@ let docSnap: any;
 let profileUID: any;
 
 const getProfileUID = async () => {
+  store.setClearImages();
   const username = route.params.username;
   console.log("username", username);
   const profileUIDRef = doc(db, "usernameToUID", username);

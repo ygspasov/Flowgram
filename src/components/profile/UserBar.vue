@@ -4,13 +4,6 @@
       <h2 class="text-2xl flex items-center">
         {{ capitalizedUsername }}
       </h2>
-      <!-- <button
-        v-if="userCheck"
-        type="button"
-        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 my-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-      >
-        upload photo
-      </button> -->
       <div id="buttonGroup" class="flex flex-col">
         <UploadModal v-if="userCheck" />
         <button

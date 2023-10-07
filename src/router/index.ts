@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import UserTimeline from "@/components/UserTimeline.vue";
+// import UserTimeline from "@/components/UserTimeline.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -7,7 +7,7 @@ const router = createRouter({
     {
       path: "/",
       name: "timeline",
-      component: UserTimeline,
+      component: () => import("@/components/timeline/UserTimeline.vue"),
     },
     {
       path: "/profile/:username",

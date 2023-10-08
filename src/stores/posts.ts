@@ -35,6 +35,7 @@ export const postsStore = defineStore("posts", {
     },
     setProfileUID(val: string) {
       this.profileUID = val;
+      localStorage.setItem("profileUID", this.profileUID);
     },
     async setFollowUser(followerUid: string, followOrUnfollow: boolean) {
       const followeeUid = this.profileUID;
@@ -86,9 +87,9 @@ export const postsStore = defineStore("posts", {
         );
         const followers = querySnapshot.docs.map((doc) => doc.id);
 
-        console.log(`Followers of user with UID ${uid}:`, followers);
+        // console.log(`Followers of user with UID ${uid}:`, followers);
         this.numberOfFollowers = followers.length;
-        console.log("number of followers", this.numberOfFollowers);
+        // console.log("number of followers", this.numberOfFollowers);
       } catch (error) {
         console.error("Error getting followers:", error);
       }

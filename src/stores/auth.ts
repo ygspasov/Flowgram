@@ -76,13 +76,16 @@ export const authStore = defineStore("auth", {
     },
     setLoginState(username: string, uid: string) {
       this.username = username;
-      this.uid = uid;
+      this.userUID = uid;
       this.userLoggedIn = true;
     },
     setSignOut() {
       this.userLoggedIn = false;
+      this.userUID = "";
+      this.username = "";
       localStorage.removeItem("uid");
       localStorage.removeItem("username");
+      localStorage.removeItem("ProfileUID");
     },
   },
 });

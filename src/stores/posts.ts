@@ -14,6 +14,7 @@ export const postsStore = defineStore("posts", {
     profileIsFollowed: ref(false),
     images: ref<Image[]>([]),
     numberOfPosts: ref(0),
+    following: ref([]),
   }),
   getters: {},
   actions: {
@@ -112,9 +113,10 @@ export const postsStore = defineStore("posts", {
       try {
         const querySnapshot = await getDocs(followingQuery);
         const following = querySnapshot.docs.map((doc) => doc.id);
-        console.log("following", following);
+        this.following = following;
+        // console.log("this.following", this.following);
         this.numberOfFollowing = following.length;
-        console.log("number of people following", this.numberOfFollowing);
+        // console.log("number of people following", this.numberOfFollowing);
       } catch (error) {
         console.error("Error getting number of people following:", error);
         throw error;

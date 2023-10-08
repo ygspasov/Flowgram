@@ -136,6 +136,7 @@ const signout = async () => {
   await signOut(auth)
     .then(() => {
       localStorage.removeItem("uid");
+      localStorage.removeItem("profileUID");
       store.setSignOut();
       posts_Store.setClearImages();
     })

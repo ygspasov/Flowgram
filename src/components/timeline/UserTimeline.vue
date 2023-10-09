@@ -14,7 +14,7 @@ const posts_Store = postsStore();
 const { following } = storeToRefs(posts_Store);
 let userIDs = ref(following.value);
 
-watch(userLoggedIn, (newVal, oldVal) => {
+watch(userLoggedIn, (newVal) => {
   console.log("newVal", newVal);
   console.log("uid", userUID.value);
   if (newVal) {

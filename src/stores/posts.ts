@@ -15,6 +15,7 @@ export const postsStore = defineStore("posts", {
     images: ref<Image[]>([]),
     numberOfPosts: ref(0),
     following: ref([]),
+    timelinePosts: ref([]),
   }),
   getters: {},
   actions: {
@@ -29,7 +30,18 @@ export const postsStore = defineStore("posts", {
         this.setPostsLoading(false);
       });
     },
-
+    setTimelinePosts(profileIDs: Array<string>) {
+      profileIDs.forEach(async (id) => {
+        const q = query(collection(db, "posts"), where("uid", "==", id));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          const el = doc.data();
+          el.id = doc.id;
+          this.timelinePosts.push(el);
+        });
+        console.log("this.timelinePosts", this.timelinePosts);
+      });
+    },
     setPostsLoading(val: boolean) {
       this.loadPosts = val;
     },

@@ -30,6 +30,7 @@ watch(following, (newVal) => {
 
 onMounted(() => {
   console.log("uid", userUID.value);
+  posts_Store.setClearTimelinePosts();
   posts_Store.fetchFollowing(userUID.value).then(() => {
     console.log("timeline following", following.value);
   });

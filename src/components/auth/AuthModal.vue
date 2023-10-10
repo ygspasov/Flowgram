@@ -156,10 +156,12 @@
 import { ref, computed } from "vue";
 import type { Ref } from "vue";
 import { authStore } from "@/stores/auth";
+import { postsStore } from "@/stores/posts";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength, sameAs } from "@vuelidate/validators";
 
 const store = authStore();
+const posts_Store = postsStore();
 let userName: Ref<string> = ref("");
 let userEmail: Ref<string> = ref("");
 let password: Ref<string> = ref("");

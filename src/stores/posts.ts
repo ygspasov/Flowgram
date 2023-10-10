@@ -31,6 +31,8 @@ export const postsStore = defineStore("posts", {
       });
     },
     setTimelinePosts(profileIDs: Array<string>) {
+      this.setClearTimelinePosts();
+      console.log("profileIDs in setTimelinePosts", profileIDs);
       profileIDs.forEach(async (id) => {
         const q = query(collection(db, "posts"), where("uid", "==", id));
         const querySnapshot = await getDocs(q);
@@ -142,6 +144,11 @@ export const postsStore = defineStore("posts", {
 
     setClearImages() {
       this.images = [];
+    },
+
+    setClearTimelinePosts() {
+      this.timelinePosts = [];
+      this.following = [];
     },
   },
 });

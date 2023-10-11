@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { doc, setDoc, getDocs, collection, query, where } from "firebase/firestore";
+import { doc, setDoc, getDocs, collection, query, where, orderBy } from "firebase/firestore";
 // @ts-ignore
 import { db } from "@/firebase/firebase";
 import { type Post } from "@/types/Post";
@@ -20,7 +20,11 @@ export const postsStore = defineStore("posts", {
   getters: {},
   actions: {
     async setPosts(profileUID: string) {
-      const q = query(collection(db, "posts"), where("uid", "==", profileUID));
+      const q = query(
+        collection(db, "posts"),
+        orderBy("uploadDate", "desc"),
+        where("uid", "==", profileUID)
+      );
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
         const el = doc.data();
@@ -34,7 +38,11 @@ export const postsStore = defineStore("posts", {
       this.setClearTimelinePosts();
       console.log("profileIDs in setTimelinePosts", profileIDs);
       profileIDs.forEach(async (id) => {
-        const q = query(collection(db, "posts"), where("uid", "==", id));
+        const q = query(
+          collection(db, "posts"),
+          orderBy("uploadDate", "desc"),
+          where("uid", "==", id)
+        );
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
           const el = doc.data();

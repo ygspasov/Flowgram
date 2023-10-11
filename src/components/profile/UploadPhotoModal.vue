@@ -102,7 +102,6 @@ let loading = ref<Boolean>(false);
 let uploadText = ref<String>("");
 let description = ref<String>("");
 
-const auth = getAuth();
 const uid = localStorage.getItem("uid");
 let file = ref("");
 
@@ -146,6 +145,8 @@ const uploadPhoto = async (file: any) => {
       store.setPostsLoading(true);
       setTimeout(() => {
         loading.value = false;
+        file = "";
+        description = ref("string");
       }, 2000);
     })
     .catch(() => {

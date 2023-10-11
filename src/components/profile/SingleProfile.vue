@@ -6,7 +6,8 @@
       :key="$route.params.username"
       @followAction="followAction"
     />
-    <userGallery :profilePosts="profilePosts" />
+    <userGallery v-if="store.profilePosts.length > 0" :profilePosts="profilePosts" />
+    <div v-else><p>The user hasn't uploaded any content yet.</p></div>
   </div>
 </template>
 <script setup lang="ts">

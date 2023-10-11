@@ -3,7 +3,7 @@ import { ref } from "vue";
 import { doc, setDoc, getDocs, collection, query, where } from "firebase/firestore";
 // @ts-ignore
 import { db } from "@/firebase/firebase";
-import { type Image } from "@/types/Image";
+import { type Post } from "@/types/Post";
 const followeesFollowersCollection = "followeesFollowers";
 export const postsStore = defineStore("posts", {
   state: () => ({
@@ -12,7 +12,7 @@ export const postsStore = defineStore("posts", {
     numberOfFollowing: ref(0),
     loadPosts: ref(false),
     profileIsFollowed: ref(false),
-    profilePosts: ref<Image[]>([]),
+    profilePosts: ref<Post[]>([]),
     numberOfPosts: ref(0),
     following: ref([]),
     timelinePosts: ref([]),

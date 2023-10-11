@@ -1,4 +1,4 @@
-export type Image = {
+export type Post = {
   downloadURL: string;
   id: string;
   lastModified: number;
@@ -6,4 +6,5 @@ export type Image = {
   size: number;
   type: string;
   uid: string;
+  description: string;
 };

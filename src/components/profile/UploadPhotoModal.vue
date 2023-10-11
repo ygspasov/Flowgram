@@ -1,76 +1,94 @@
 <template>
-  <!-- Modal toggle -->
-  <button
-    data-modal-target="staticModal"
-    data-modal-toggle="staticModal"
-    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 my-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-    type="button"
-  >
-    Upload photo
-  </button>
+  <div id="uploadModal">
+    <!-- Modal toggle -->
+    <button
+      data-modal-target="staticModal"
+      data-modal-toggle="staticModal"
+      class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 my-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+      type="button"
+    >
+      Upload photo
+    </button>
 
-  <!-- Main modal -->
-  <div
-    id="staticModal"
-    data-modal-backdrop="static"
-    tabindex="-1"
-    class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
-  >
-    <div class="relative w-full max-w-2xl max-h-full">
-      <!-- Modal content -->
-      <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-        <!-- Modal body -->
-        <div class="p-6 space-y-6">
-          <label
-            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            for="file_input"
-            >Upload photo</label
+    <!-- Main modal -->
+    <div
+      id="staticModal"
+      data-modal-backdrop="static"
+      tabindex="-1"
+      class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
+    >
+      <div class="relative w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+          <!-- Modal body -->
+          <div class="p-6 space-y-6">
+            <label
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              for="file_input"
+              >Upload photo</label
+            >
+            <input
+              @change="handleUpload($event)"
+              class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+              id="file_input"
+              type="file"
+              accept=".jpeg,.png,.jpg"
+            />
+          </div>
+          <!-- Modal footer -->
+          <div class="px-6 mb-5">
+            <label
+              for="message"
+              class="block mb-3 text-sm font-medium text-gray-900 dark:text-white"
+              >Add description</label
+            >
+            <textarea
+              id="message"
+              rows="4"
+              class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Write your thoughts here..."
+              v-model="description"
+            ></textarea>
+          </div>
+          <div
+            class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600"
           >
-          <input
-            @change="handleUpload($event)"
-            class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-            id="file_input"
-            type="file"
-            accept=".jpeg,.png,.jpg"
-          />
-        </div>
-        <!-- Modal footer -->
-        <div
-          class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600"
-        >
-          <button
-            @click="uploadPhoto(file)"
-            data-modal-hide="staticModal"
-            type="button"
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          >
-            Upload
-          </button>
-          <button
-            data-modal-hide="staticModal"
-            type="button"
-            class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
-          >
-            Close
-          </button>
+            <button
+              @click="uploadPhoto(file)"
+              data-modal-hide="staticModal"
+              type="button"
+              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              :class="{ disabled: isDisabled }"
+              :disabled="isDisabled"
+            >
+              Upload
+            </button>
+            <button
+              data-modal-hide="staticModal"
+              type="button"
+              class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+            >
+              Close
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <!-- Success/Error messages -->
-  <div
-    v-if="loading"
-    class="flex items-center justify-center w-full h-10 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
-  >
+    <!-- Success/Error messages -->
     <div
-      class="px-3 py-1 text-xs font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200"
+      v-if="loading"
+      class="flex items-center justify-center w-full h-10 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
     >
-      {{ uploadText }}
+      <div
+        class="px-3 py-1 text-xs font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200"
+      >
+        {{ uploadText }}
+      </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { collection, addDoc } from "firebase/firestore";
 // @ts-ignore
 import { db } from "@/firebase/firebase.js";
@@ -82,6 +100,7 @@ const store = postsStore();
 const storage = getStorage();
 let loading = ref<Boolean>(false);
 let uploadText = ref<String>("");
+let description = ref<String>("");
 
 const auth = getAuth();
 const uid = localStorage.getItem("uid");
@@ -119,6 +138,8 @@ const uploadPhoto = async (file: any) => {
     lastModified: file.lastModified,
     type: file.type,
     downloadURL,
+    uploadDate: Date.now(),
+    description: description.value,
   })
     .then(() => {
       uploadText.value = "Image added successfully";
@@ -134,5 +155,10 @@ const uploadPhoto = async (file: any) => {
       }, 2000);
     });
 };
+let isDisabled = computed(() => !description.value || !file);
 </script>
-<style></style>
+<style>
+#uploadModal .disabled {
+  @apply bg-gray-500;
+}
+</style>

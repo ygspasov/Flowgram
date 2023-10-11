@@ -4,13 +4,12 @@
       v-if="userCheck"
       class="flex flex-wrap flex-col md:flex-row justify-between bg-slate-300 my-5 p-5"
     >
-      <div class="mb-5 w-full md:w-1/3" v-for="image in images" :key="image.id">
-        <!-- <span>Name {{ image.name }}</span> -->
-        <img class="w-full max-w-sm" :src="image.downloadURL" alt="image description" />
+      <div class="mb-5 w-full md:w-1/3" v-for="post in posts" :key="post.id">
+        <img class="w-full max-w-sm" :src="post.downloadURL" alt="image description" />
       </div>
     </div>
     <div v-else>
-      <p class="text-xl text-red-600 text-center">The user hasn't upoloaded anything yet.</p>
+      <p class="text-xl text-red-600 text-center">The user hasn't uploaded anything yet.</p>
     </div>
   </div>
 </template>
@@ -33,7 +32,7 @@ const authUsername: string = username.value.toLowerCase();
 //Checking if the user profile belongs to the user in order to show user content
 const userCheck = computed(() => userLoggedIn);
 const props = defineProps<{
-  images: Image[];
+  profilePosts: Image[];
 }>();
 
 watch(
@@ -43,9 +42,9 @@ watch(
   }
 );
 
-const { images } = toRefs(props);
+const { profilePosts: posts } = toRefs(props);
 
 onMounted(() => {
-  console.log("images", images.value);
+  console.log("posts", posts);
 });
 </script>

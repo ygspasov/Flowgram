@@ -12,7 +12,7 @@ export const postsStore = defineStore("posts", {
     numberOfFollowing: ref(0),
     loadPosts: ref(false),
     profileIsFollowed: ref(false),
-    images: ref<Image[]>([]),
+    profilePosts: ref<Image[]>([]),
     numberOfPosts: ref(0),
     following: ref([]),
     timelinePosts: ref([]),
@@ -25,8 +25,8 @@ export const postsStore = defineStore("posts", {
       querySnapshot.forEach((doc) => {
         const el = doc.data();
         el.id = doc.id;
-        this.images.push(el);
-        this.numberOfPosts = this.images.length;
+        this.profilePosts.push(el);
+        this.numberOfPosts = this.profilePosts.length;
         this.setPostsLoading(false);
       });
     },
@@ -142,8 +142,8 @@ export const postsStore = defineStore("posts", {
       this.profileIsFollowed = val;
     },
 
-    setClearImages() {
-      this.images = [];
+    setClearProfilePosts() {
+      this.profilePosts = [];
     },
 
     setClearTimelinePosts() {

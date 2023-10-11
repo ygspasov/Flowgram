@@ -6,7 +6,7 @@
       :key="$route.params.username"
       @followAction="followAction"
     />
-    <userGallery :images="images" />
+    <userGallery :profilePosts="profilePosts" />
   </div>
 </template>
 <script setup lang="ts">
@@ -24,17 +24,17 @@ const route = useRoute();
 const componentKey = ref(route.fullPath);
 const store = postsStore();
 watch(route, () => {
-  //watching for changes in the router parameter(username) and updating the profile images
+  //watching for changes in the router parameter(username) and updating the profile profilePosts
   componentKey.value = route.fullPath;
-  store.setClearImages();
+  store.setClearProfilePosts();
   getProfileUID();
 });
 
-const { loadPosts, numberOfFollowers, numberOfFollowing, images, numberOfPosts }: any =
+const { loadPosts, numberOfFollowers, numberOfFollowing, profilePosts, numberOfPosts }: any =
   storeToRefs(store);
 watch(loadPosts, (newVal) => {
   if (newVal) {
-    store.setClearImages();
+    store.setClearProfilePosts();
     getPosts();
   }
 });
@@ -45,7 +45,7 @@ let docSnap: any;
 let profileUID: any;
 
 const getProfileUID = async () => {
-  store.setClearImages();
+  store.setClearProfilePosts();
   const username = route.params.username;
   console.log("username", username);
   const profileUIDRef = doc(db, "usernameToUID", username);

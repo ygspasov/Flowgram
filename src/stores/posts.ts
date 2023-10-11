@@ -129,7 +129,7 @@ export const postsStore = defineStore("posts", {
         const querySnapshot = await getDocs(followingQuery);
         const following = querySnapshot.docs.map((doc) => doc.id);
         this.following = following;
-        // console.log("this.following", this.following);
+        console.log("this.following", this.following);
         this.numberOfFollowing = following.length;
         // console.log("number of people following", this.numberOfFollowing);
       } catch (error) {

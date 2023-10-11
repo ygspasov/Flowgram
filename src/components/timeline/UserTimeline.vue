@@ -15,7 +15,7 @@ const { following } = storeToRefs(posts_Store);
 let userIDs = ref(following.value);
 
 watch(userLoggedIn, (newVal) => {
-  console.log("newVal", newVal);
+  console.log("userUID.value", userUID.value);
   console.log("uid", userUID.value);
   if (newVal) {
     posts_Store.fetchFollowing(userUID.value).then(() => {
@@ -29,10 +29,10 @@ watch(following, (newVal) => {
 });
 
 onMounted(() => {
-  console.log("uid", userUID.value);
-  posts_Store.setClearTimelinePosts();
+  console.log("userUID.value", userUID.value);
   posts_Store.fetchFollowing(userUID.value).then(() => {
     console.log("timeline following", following.value);
+    posts_Store.setTimelinePosts(userIDs.value);
   });
 });
 </script>

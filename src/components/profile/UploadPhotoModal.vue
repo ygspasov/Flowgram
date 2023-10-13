@@ -92,15 +92,17 @@ import { ref, computed } from "vue";
 import { collection, addDoc } from "firebase/firestore";
 // @ts-ignore
 import { db } from "@/firebase/firebase.js";
-import { getAuth } from "firebase/auth";
+import { authStore } from "@/stores/auth";
+import { storeToRefs } from "pinia";
 import { getStorage, getDownloadURL, ref as storageReference, uploadBytes } from "firebase/storage";
 import { postsStore } from "@/stores/posts";
 const store = postsStore();
-
+const auth_Store = authStore();
 const storage = getStorage();
 let loading = ref<Boolean>(false);
 let uploadText = ref<String>("");
 let description = ref<String>("");
+const { username }: any = storeToRefs(auth_Store);
 
 const uid = localStorage.getItem("uid");
 let file = ref("");
@@ -139,6 +141,7 @@ const uploadPhoto = async (file: any) => {
     downloadURL,
     uploadDate: Date.now(),
     description: description.value,
+    username: username.value,
   })
     .then(() => {
       uploadText.value = "Image added successfully";

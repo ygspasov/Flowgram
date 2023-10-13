@@ -7,4 +7,5 @@ export type Post = {
   type: string;
   uid: string;
   description: string;
+  username: string;
 };

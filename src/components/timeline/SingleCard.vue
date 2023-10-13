@@ -13,12 +13,13 @@
       </a>
       <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Posted by {{ post.username }}</p>
       <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">On {{ timeFormat }}</p>
-      <button
-        type="button"
-        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
-      >
-        Like
-      </button>
+      <div class="flex justify-between text-white">
+        <font-awesome-icon :icon="['fas', 'thumbs-up']" size="xl" class="text-gray-400" />
+        <span class="icons"
+          ><font-awesome-icon class="mx-1" :icon="['fa', 'pen-to-square']" size="xl" />
+          <font-awesome-icon class="mx-1" :icon="['fa', 'trash']" size="xl"
+        /></span>
+      </div>
     </div>
   </div>
 </template>

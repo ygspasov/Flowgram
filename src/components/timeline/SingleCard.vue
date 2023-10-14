@@ -30,9 +30,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { postsStore } from "@/stores/posts";
+import { authStore } from "@/stores/auth";
+import { storeToRefs } from "pinia";
+const auth_Store = authStore();
+const { userUID } = storeToRefs(auth_Store);
 const posts_Store = postsStore();
+const { following } = storeToRefs(posts_Store);
+let userIDs = ref(following.value);
 const props = defineProps({
   post: {
     type: Object,
@@ -41,7 +47,13 @@ const props = defineProps({
 });
 const deletePost = () => {
   const id = props.post.id;
-  posts_Store.deletePost(id).then(() => {});
+  posts_Store.deletePost(id).then(() => {
+    posts_Store.fetchFollowing(userUID.value).then(() => {
+      console.log("userIDs.value deletePost", userIDs.value);
+      // posts_Store.setTimelinePosts(userIDs.value);
+      posts_Store.setPostsLoading(true);
+    });
+  });
 };
 const timeFormat = computed(() => new Date(props.post.uploadDate).toUTCString());
 </script>

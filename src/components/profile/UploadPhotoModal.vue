@@ -149,7 +149,7 @@ const uploadPhoto = async (file: any) => {
       setTimeout(() => {
         loading.value = false;
         file = "";
-        description = ref("string");
+        description = ref("");
       }, 2000);
     })
     .catch(() => {

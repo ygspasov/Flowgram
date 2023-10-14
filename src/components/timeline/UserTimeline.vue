@@ -11,7 +11,7 @@ import { storeToRefs } from "pinia";
 const auth_Store = authStore();
 const { userLoggedIn, userUID } = storeToRefs(auth_Store);
 const posts_Store = postsStore();
-const { following } = storeToRefs(posts_Store);
+const { following, loadPosts } = storeToRefs(posts_Store);
 let userIDs = ref(following.value);
 
 watch(userLoggedIn, (newVal) => {
@@ -28,12 +28,25 @@ watch(following, (newVal) => {
   userIDs.value = newVal;
 });
 
-onMounted(() => {
-  console.log("userUID.value", userUID.value);
+const getTimelinePosts = () => {
   posts_Store.fetchFollowing(userUID.value).then(() => {
     console.log("timeline following", following.value);
     posts_Store.setTimelinePosts(userIDs.value);
   });
+};
+
+watch(loadPosts, (newVal) => {
+  if (newVal) {
+    getTimelinePosts();
+  }
+});
+
+onMounted(() => {
+  getTimelinePosts();
 });
 </script>
-<style></style>
+<style>
+a {
+  cursor: pointer;
+}
+</style>

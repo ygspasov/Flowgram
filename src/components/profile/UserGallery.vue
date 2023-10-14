@@ -4,7 +4,7 @@
       v-if="userCheck"
       class="flex flex-wrap flex-col md:flex-row justify-between bg-slate-300 my-5 p-5"
     >
-      <div class="mb-5 w-full md:w-1/3" v-for="post in posts" :key="post.id">
+      <div class="flex justify-center mb-5 w-full md:w-1/3" v-for="post in posts" :key="post.id">
         <SingleCard :post="post" />
       </div>
     </div>

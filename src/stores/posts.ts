@@ -3,6 +3,7 @@ import { ref } from "vue";
 import {
   doc,
   setDoc,
+  getDoc,
   getDocs,
   collection,
   query,
@@ -10,6 +11,7 @@ import {
   orderBy,
   deleteDoc,
 } from "firebase/firestore";
+import { ref as storageRef, deleteObject, getStorage } from "firebase/storage";
 // @ts-ignore
 import { db } from "@/firebase/firebase";
 import { type Post } from "@/types/Post";
@@ -156,10 +158,35 @@ export const postsStore = defineStore("posts", {
       }
     },
     async deletePost(id: string) {
-      console.log("deletePost");
-      await deleteDoc(doc(db, "posts", id)).then(() => {
-        // this.setTimelinePosts()
-      });
+      const postRef = doc(db, "posts", id);
+      const storage = getStorage(); // Initialize storage
+
+      try {
+        const postSnapshot = await getDoc(postRef);
+        if (!postSnapshot.exists()) {
+          console.log("Post not found.");
+          return;
+        }
+
+        const imageData = postSnapshot.data();
+        const imageURL = imageData.downloadURL;
+
+        // If imageURL exists and is not empty, delete the image
+        if (imageURL) {
+          const imageRef = storageRef(storage, imageURL);
+          // Deleting the image
+          await deleteObject(imageRef);
+          console.log("Image associated with the post deleted successfully.");
+        } else {
+          console.log("No image associated with the post.");
+        }
+
+        // Deleting the post data
+        await deleteDoc(postRef);
+        console.log("Post deleted successfully.");
+      } catch (error) {
+        console.error("Error deleting post:", error);
+      }
     },
 
     setProfileIsFollowed(val: boolean) {

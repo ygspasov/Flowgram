@@ -1,9 +1,19 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { doc, setDoc, getDocs, collection, query, where, orderBy } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  getDocs,
+  collection,
+  query,
+  where,
+  orderBy,
+  deleteDoc,
+} from "firebase/firestore";
 // @ts-ignore
 import { db } from "@/firebase/firebase";
 import { type Post } from "@/types/Post";
+
 const followeesFollowersCollection = "followeesFollowers";
 export const postsStore = defineStore("posts", {
   state: () => ({
@@ -144,6 +154,12 @@ export const postsStore = defineStore("posts", {
         console.error("Error getting number of people following:", error);
         throw error;
       }
+    },
+    async deletePost(id: string) {
+      console.log("deletePost");
+      await deleteDoc(doc(db, "posts", id)).then(() => {
+        // this.setTimelinePosts()
+      });
     },
 
     setProfileIsFollowed(val: boolean) {

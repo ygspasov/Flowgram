@@ -14,11 +14,16 @@
       <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Posted by {{ post.username }}</p>
       <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">On {{ timeFormat }}</p>
       <div class="flex justify-between text-white">
-        <font-awesome-icon :icon="['fas', 'thumbs-up']" size="xl" class="text-gray-400" />
+        <a href=""
+          ><font-awesome-icon :icon="['fas', 'thumbs-up']" size="xl" class="text-gray-400"
+        /></a>
         <span class="icons"
-          ><font-awesome-icon class="mx-1" :icon="['fa', 'pen-to-square']" size="xl" />
-          <font-awesome-icon class="mx-1" :icon="['fa', 'trash']" size="xl"
-        /></span>
+          ><a href=""
+            ><font-awesome-icon class="mx-1" :icon="['fa', 'pen-to-square']" size="xl"
+          /></a>
+          <a @click="deletePost"
+            ><font-awesome-icon class="mx-1" :icon="['fa', 'trash']" size="xl" /></a
+        ></span>
       </div>
     </div>
   </div>
@@ -26,12 +31,18 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { postsStore } from "@/stores/posts";
+const posts_Store = postsStore();
 const props = defineProps({
   post: {
     type: Object,
     required: true,
   },
 });
+const deletePost = () => {
+  const id = props.post.id;
+  posts_Store.deletePost(id).then(() => {});
+};
 const timeFormat = computed(() => new Date(props.post.uploadDate).toUTCString());
 </script>
 <style></style>

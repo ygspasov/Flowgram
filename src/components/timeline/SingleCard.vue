@@ -11,6 +11,27 @@
           {{ post.description }}
         </h5>
       </a>
+      <div class="my-3" v-if="showEdit">
+        <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          >Edit description</label
+        >
+        <input
+          type="text"
+          v-model="post.description"
+          id="first_name"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          required
+        />
+        <button
+          @click="editPost"
+          type="submit"
+          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 mt-3 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          :disabled="post.description.length < 1"
+          :class="{ disabled: post.description.length < 1 }"
+        >
+          Edit
+        </button>
+      </div>
       <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Posted by {{ post.username }}</p>
       <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">On {{ timeFormat }}</p>
       <div class="flex justify-between text-white">
@@ -18,7 +39,7 @@
           ><font-awesome-icon :icon="['fas', 'thumbs-up']" size="xl" class="text-gray-400"
         /></a>
         <span class="icons"
-          ><a href=""
+          ><a @click="showEdit = !showEdit"
             ><font-awesome-icon class="mx-1" :icon="['fa', 'pen-to-square']" size="xl"
           /></a>
           <a @click="deletePost"
@@ -39,12 +60,15 @@ const { userUID } = storeToRefs(auth_Store);
 const posts_Store = postsStore();
 const { following } = storeToRefs(posts_Store);
 let userIDs = ref(following.value);
+let showEdit = ref(false);
+
 const props = defineProps({
   post: {
     type: Object,
     required: true,
   },
 });
+let post = props.post;
 const deletePost = () => {
   const id = props.post.id;
   posts_Store.deletePost(id).then(() => {
@@ -55,6 +79,16 @@ const deletePost = () => {
     });
   });
 };
+const editPost = () => {
+  posts_Store.editPost(post.id, post.description).then(() => {
+    showEdit.value = false;
+    console.log("showEdit", showEdit.value);
+  });
+};
 const timeFormat = computed(() => new Date(props.post.uploadDate).toUTCString());
 </script>
-<style></style>
+<style scoped>
+.disabled {
+  @apply bg-gray-500;
+}
+</style>

@@ -10,6 +10,7 @@ import {
   where,
   orderBy,
   deleteDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { ref as storageRef, deleteObject, getStorage } from "firebase/storage";
 // @ts-ignore
@@ -186,6 +187,19 @@ export const postsStore = defineStore("posts", {
         console.log("Post deleted successfully.");
       } catch (error) {
         console.error("Error deleting post:", error);
+      }
+    },
+
+    async editPost(id: string, newDescription: string) {
+      const postRef = doc(db, "posts", id);
+      try {
+        await updateDoc(postRef, {
+          description: newDescription,
+        });
+
+        console.log("Post description updated successfully.");
+      } catch (error) {
+        console.error("Error updating post description:", error);
       }
     },
 

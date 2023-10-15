@@ -10,6 +10,6 @@ import SingleCard from "./SingleCard.vue";
 import { postsStore } from "@/stores/posts";
 import { storeToRefs } from "pinia";
 const posts_Store = postsStore();
-const { timelinePosts: posts } = storeToRefs(posts_Store);
+let { timelinePosts: posts } = storeToRefs(posts_Store);
 </script>
 <style></style>

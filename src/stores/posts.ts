@@ -203,6 +203,24 @@ export const postsStore = defineStore("posts", {
       }
     },
 
+    async toggleLike(postId: string, userId: string) {
+      const postRef = doc(db, "posts", postId);
+      const postSnapshot = await getDoc(postRef);
+      const post = postSnapshot.data();
+      const liked = post.likes && post.likes[userId];
+      let newLikes;
+      if (liked) {
+        // User has already liked the post, remove the like (dislike)
+        newLikes = { ...post.likes };
+        delete newLikes[userId];
+      } else {
+        // User hasn't liked the post, add the like
+        newLikes = { ...post.likes, [userId]: true };
+      }
+      // Update the likes field in the database
+      await updateDoc(postRef, { likes: newLikes });
+    },
+
     setProfileIsFollowed(val: boolean) {
       this.profileIsFollowed = val;
     },

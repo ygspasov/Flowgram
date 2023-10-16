@@ -6,7 +6,7 @@
       <img class="rounded-t-lg" :src="post.downloadURL" alt="" />
     </a>
     <div class="p-5">
-      <a href="#">
+      <a>
         <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
           {{ post.description }}
         </h5>
@@ -35,9 +35,18 @@
       <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Posted by {{ post.username }}</p>
       <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">On {{ timeFormat }}</p>
       <div class="flex justify-between text-white">
-        <a href=""
-          ><font-awesome-icon :icon="['fas', 'thumbs-up']" size="xl" class="text-gray-400"
-        /></a>
+        <div id="likes">
+          <a @click="toggleLike"
+            ><font-awesome-icon :icon="['fas', 'thumbs-up']" size="xl" class="text-gray-400"
+          /></a>
+          <!-- <div v-if="numberOfLikes === 0">Loading</div> -->
+          <div
+            v-if="numberOfLikes"
+            class="bg-blue-100 hover:bg-blue-200 text-blue-800 text-base font-semibold mx-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400 inline-flex items-center justify-center"
+          >
+            Likes: {{ numberOfLikes }}
+          </div>
+        </div>
         <span class="icons"
           ><a @click="showEdit = !showEdit"
             ><font-awesome-icon class="mx-1" :icon="['fa', 'pen-to-square']" size="xl"
@@ -51,7 +60,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, onMounted } from "vue";
 import { postsStore } from "@/stores/posts";
 import { authStore } from "@/stores/auth";
 import { storeToRefs } from "pinia";
@@ -86,9 +95,20 @@ const editPost = () => {
   });
 };
 const timeFormat = computed(() => new Date(props.post.uploadDate).toUTCString());
+
+const toggleLike = () => {
+  posts_Store.toggleLike(post.id, userUID.value);
+};
+const numberOfLikes = computed(() => {
+  let result = Object.keys(post.likes).length;
+  return result;
+});
 </script>
 <style scoped>
 .disabled {
   @apply bg-gray-500;
+}
+a {
+  cursor: pointer;
 }
 </style>

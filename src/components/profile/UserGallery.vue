@@ -44,7 +44,4 @@ watch(
 );
 
 const { profilePosts: posts } = toRefs(props);
-onMounted(() => {
-  console.log("posts", posts);
-});
 </script>

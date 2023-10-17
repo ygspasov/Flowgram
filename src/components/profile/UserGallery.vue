@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, toRefs, computed, watch, reactive } from "vue";
+import { toRefs, computed, watch, reactive } from "vue";
 import { type Post } from "@/types/Post";
 import { storeToRefs } from "pinia";
 import { authStore } from "@/stores/auth";

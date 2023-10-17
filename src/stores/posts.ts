@@ -146,9 +146,13 @@ export const postsStore = defineStore("posts", {
     async fetchFollowing(followeeId: string) {
       const followingRef = collection(db, `following/${followeeId}/following`);
       const followingQuery = query(followingRef, where("followed", "==", true));
+      const userUID = localStorage.getItem("uid");
+      console.log("fetchFollowing userUID", userUID);
       try {
         const querySnapshot = await getDocs(followingQuery);
-        const following = querySnapshot.docs.map((doc) => doc.id);
+        let following = querySnapshot.docs.map((doc) => doc.id);
+        //Adding the logged in user to the people being followed on the user timeline
+        following.push(userUID);
         this.following = following;
         console.log("this.following", this.following);
         this.numberOfFollowing = following.length;

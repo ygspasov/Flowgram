@@ -46,7 +46,7 @@
             Likes: {{ numberOfLikes }}
           </div>
         </div>
-        <span class="icons"
+        <span class="icons" v-if="isUserPost"
           ><a @click="showEdit = !showEdit"
             ><font-awesome-icon class="mx-1" :icon="['fa', 'pen-to-square']" size="xl"
           /></a>
@@ -63,6 +63,8 @@ import { computed, ref, onMounted } from "vue";
 import { postsStore } from "@/stores/posts";
 import { authStore } from "@/stores/auth";
 import { storeToRefs } from "pinia";
+import { useRoute } from "vue-router";
+const route = useRoute();
 const auth_Store = authStore();
 const { userUID } = storeToRefs(auth_Store);
 const posts_Store = postsStore();
@@ -121,8 +123,13 @@ const likedByUID = computed(() => {
     return post.likes[userUID.value];
   }
 });
+const isUserPost = computed(() => {
+  return userUID.value == post.uid;
+});
 onMounted(() => {
   console.log("post", post);
+  console.log("userUID", userUID.value);
+  console.log("post.uid", post.uid);
 });
 </script>
 <style scoped>

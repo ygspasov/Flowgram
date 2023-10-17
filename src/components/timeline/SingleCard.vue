@@ -37,9 +37,8 @@
       <div class="flex justify-between text-white">
         <div id="likes">
           <a @click="toggleLike"
-            ><font-awesome-icon :icon="['fas', 'thumbs-up']" size="xl" class="text-gray-400"
+            ><font-awesome-icon :icon="['fas', 'thumbs-up']" size="xl" :class="{ likedByUID }"
           /></a>
-          <!-- <div v-if="numberOfLikes === 0">Loading</div> -->
           <div
             v-if="numberOfLikes"
             class="bg-blue-100 hover:bg-blue-200 text-blue-800 text-base font-semibold mx-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-blue-400 border border-blue-400 inline-flex items-center justify-center"
@@ -97,16 +96,41 @@ const editPost = () => {
 const timeFormat = computed(() => new Date(props.post.uploadDate).toUTCString());
 
 const toggleLike = () => {
-  posts_Store.toggleLike(post.id, userUID.value);
+  posts_Store.toggleLike(post.id, userUID.value).then(() => {
+    if (post.likes) {
+      post.likes[userUID.value] = !post.likes[userUID.value];
+    } else {
+      post.likes = { ...post.likes, [userUID.value]: true };
+    }
+    console.log("post.likes", post.likes);
+  });
 };
 const numberOfLikes = computed(() => {
-  let result = Object.keys(post.likes).length;
-  return result;
+  if (!post.likes) return;
+  let likesCount = 0;
+  Object.keys(post.likes).forEach((userId) => {
+    if (post.likes[userId] === true) {
+      likesCount++;
+    }
+  });
+  return likesCount;
+});
+const likedByUID = computed(() => {
+  if (post.likes) {
+    //returns if the logged in user likes the post
+    return post.likes[userUID.value];
+  }
+});
+onMounted(() => {
+  console.log("post", post);
 });
 </script>
 <style scoped>
 .disabled {
   @apply bg-gray-500;
+}
+.likedByUID {
+  @apply text-green-400;
 }
 a {
   cursor: pointer;

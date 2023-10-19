@@ -49,9 +49,12 @@ export const postsStore = defineStore("posts", {
       });
     },
     setMorePosts(firstCardIndex, lastCardIndex) {
-      console.log("firstCardIndex,lastCardIndex", firstCardIndex, lastCardIndex);
-      this.morePosts = this.timelinePosts.slice(firstCardIndex, lastCardIndex);
-      console.log("this.morePosts", this.morePosts);
+      console.log("firstCardIndex, lastCardIndex", firstCardIndex, lastCardIndex);
+      this.morePosts = this.timelinePosts
+        .sort((a, b) => {
+          return b.uploadDate - a.uploadDate;
+        })
+        .slice(firstCardIndex, lastCardIndex);
     },
     setTimelinePosts(profileIDs: Array<string>) {
       this.setClearTimelinePosts();

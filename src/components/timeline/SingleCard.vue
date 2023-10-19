@@ -63,8 +63,6 @@ import { computed, ref, onMounted } from "vue";
 import { postsStore } from "@/stores/posts";
 import { authStore } from "@/stores/auth";
 import { storeToRefs } from "pinia";
-import { useRoute } from "vue-router";
-const route = useRoute();
 const auth_Store = authStore();
 const { userUID } = storeToRefs(auth_Store);
 const posts_Store = postsStore();
@@ -127,9 +125,9 @@ const isUserPost = computed(() => {
   return userUID.value == post.uid;
 });
 onMounted(() => {
-  console.log("post", post);
-  console.log("userUID", userUID.value);
-  console.log("post.uid", post.uid);
+  // console.log("post", post);
+  // console.log("userUID", userUID.value);
+  // console.log("post.uid", post.uid);
 });
 </script>
 <style scoped>

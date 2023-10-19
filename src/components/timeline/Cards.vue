@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-wrap justify-around items-start my-5">
-    <div v-for="post in posts">
+    <div v-for="post in morePosts">
       <SingleCard :post="post" />
     </div>
   </div>
@@ -10,6 +10,6 @@ import SingleCard from "./SingleCard.vue";
 import { postsStore } from "@/stores/posts";
 import { storeToRefs } from "pinia";
 const posts_Store = postsStore();
-let { timelinePosts: posts } = storeToRefs(posts_Store);
+let { morePosts } = storeToRefs(posts_Store);
 </script>
 <style></style>

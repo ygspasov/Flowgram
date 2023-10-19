@@ -29,6 +29,7 @@ export const postsStore = defineStore("posts", {
     numberOfPosts: ref(0),
     following: ref([]),
     timelinePosts: ref([]),
+    morePosts: ref([]),
   }),
   getters: {},
   actions: {
@@ -46,6 +47,11 @@ export const postsStore = defineStore("posts", {
         this.numberOfPosts = this.profilePosts.length;
         this.setPostsLoading(false);
       });
+    },
+    setMorePosts(firstCardIndex, lastCardIndex) {
+      console.log("firstCardIndex,lastCardIndex", firstCardIndex, lastCardIndex);
+      this.morePosts = this.timelinePosts.slice(firstCardIndex, lastCardIndex);
+      console.log("this.morePosts", this.morePosts);
     },
     setTimelinePosts(profileIDs: Array<string>) {
       this.setClearTimelinePosts();
@@ -235,6 +241,7 @@ export const postsStore = defineStore("posts", {
 
     setClearTimelinePosts() {
       this.timelinePosts = [];
+      this.morePosts = [];
       this.following = [];
     },
   },

@@ -50,7 +50,7 @@
           ><a @click="showEdit = !showEdit"
             ><font-awesome-icon class="mx-1" :icon="['fa', 'pen-to-square']" size="xl"
           /></a>
-          <a @click="deletePost"
+          <a @click.stop="deletePost"
             ><font-awesome-icon class="mx-1" :icon="['fa', 'trash']" size="xl" /></a
         ></span>
       </div>
@@ -69,6 +69,7 @@ const posts_Store = postsStore();
 const { following } = storeToRefs(posts_Store);
 let userIDs = ref(following.value);
 let showEdit = ref(false);
+const emit = defineEmits(["deletePostId"]);
 
 const props = defineProps({
   post: {
@@ -80,11 +81,12 @@ let post = props.post;
 const deletePost = () => {
   const id = props.post.id;
   posts_Store.deletePost(id).then(() => {
-    posts_Store.fetchFollowing(userUID.value).then(() => {
-      console.log("userIDs.value deletePost", userIDs.value);
-      // posts_Store.setTimelinePosts(userIDs.value);
-      posts_Store.setPostsLoading(true);
-    });
+    // posts_Store.fetchFollowing(userUID.value).then(() => {
+    //   console.log("userIDs.value deletePost", userIDs.value);
+    //   // posts_Store.setTimelinePosts(userIDs.value);
+    //   posts_Store.setPostsLoading(true);
+    // });
+    emit("deletePostId", id);
   });
 };
 const editPost = () => {

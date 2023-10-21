@@ -17,7 +17,7 @@ const { following, loadPosts, morePosts } = storeToRefs(posts_Store);
 let userIDs = ref(following.value);
 let delay = ref(false);
 let firstCardIndex = ref(0);
-let lastCardIndex = ref(6);
+let lastCardIndex = ref(9);
 
 watch(userLoggedIn, (newVal) => {
   console.log("userUID.value", userUID.value);

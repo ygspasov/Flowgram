@@ -164,7 +164,8 @@ export const postsStore = defineStore("posts", {
         following.push(userUID);
         this.following = following;
         console.log("this.following", this.following);
-        this.numberOfFollowing = following.length;
+        //Removing yourself from the number of people being followed
+        this.numberOfFollowing = following.length - 1;
         // console.log("number of people following", this.numberOfFollowing);
       } catch (error) {
         console.error("Error getting number of people following:", error);

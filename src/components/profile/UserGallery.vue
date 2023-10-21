@@ -1,8 +1,12 @@
 <template>
   <div id="user-profile">
     <div v-if="userCheck" class="flex flex-wrap flex-col md:flex-row justify-between my-5">
-      <div class="flex justify-center mb-5 w-full md:w-1/3" v-for="post in posts" :key="post.id">
-        <SingleCard :post="post" />
+      <div
+        class="flex justify-center mb-5 w-full md:w-1/3"
+        v-for="post in profilePosts"
+        :key="post.id"
+      >
+        <SingleCard :post="post" @deletePostId="deleteProfilePostId" />
       </div>
     </div>
     <div v-else>
@@ -38,5 +42,14 @@ watch(
   }
 );
 
-const { profilePosts: posts } = toRefs(props);
+const deleteProfilePostId = (id: string) => {
+  const objWithIdIndex = profilePosts.value.findIndex((post) => post.id === id);
+  if (objWithIdIndex > -1) {
+    // console.log("profile post to be deleted", profilePosts.value[objWithIdIndex]);
+    profilePosts.value.splice(objWithIdIndex, 1);
+    // posts_Store.setPostsLoading(true);
+  }
+};
+
+const { profilePosts } = toRefs(props);
 </script>

@@ -26,10 +26,10 @@ export const postsStore = defineStore("posts", {
     loadPosts: ref(false),
     profileIsFollowed: ref(false),
     profilePosts: ref<Post[]>([]),
-    numberOfPosts: ref(0),
+    numberOfPosts: ref<Post[]>([]),
     following: ref([]),
-    timelinePosts: ref([]),
-    morePosts: ref([]),
+    timelinePosts: ref<Post[]>([]),
+    morePosts: ref<Post[]>([]),
   }),
   getters: {},
   actions: {
@@ -48,7 +48,7 @@ export const postsStore = defineStore("posts", {
         this.setPostsLoading(false);
       });
     },
-    setMorePosts(firstCardIndex, lastCardIndex) {
+    setMorePosts(firstCardIndex: number, lastCardIndex: number) {
       console.log("firstCardIndex, lastCardIndex", firstCardIndex, lastCardIndex);
       this.morePosts = this.timelinePosts
         .sort((a, b) => {
@@ -249,17 +249,17 @@ export const postsStore = defineStore("posts", {
       this.following = [];
     },
 
-    deletePostId(id: string, post: Post) {
+    deletePostId(id: string) {
       const objWithIdIndex = this.morePosts.findIndex((post) => post.id === id);
       if (objWithIdIndex > -1) {
         // console.log("post to be deleted", morePosts.value[objWithIdIndex]);
         // console.log("morePosts.value", morePosts.value);
         this.morePosts.splice(objWithIdIndex, 1);
       }
-      this.deleteProfilePostId(id, post);
+      this.deleteProfilePostId(id);
     },
 
-    deleteProfilePostId(id: string, post: Post) {
+    deleteProfilePostId(id: string) {
       const objWithIdIndex = this.profilePosts.findIndex((post) => post.id === id);
       if (objWithIdIndex > -1) {
         // console.log("profile post to be deleted", profilePosts.value[objWithIdIndex]);

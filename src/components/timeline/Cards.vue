@@ -13,11 +13,11 @@ import { storeToRefs } from "pinia";
 const posts_Store = postsStore();
 let { morePosts, profilePosts } = storeToRefs(posts_Store);
 
-const deletePostId = (id: string, post: Post) => {
-  posts_Store.deletePostId(id, post);
-  deleteProfilePostId(id, post);
+const deletePostId = (id: string) => {
+  posts_Store.deletePostId(id);
+  deleteProfilePostId(id);
 };
-const deleteProfilePostId = (id: string, post: Post) => {
-  posts_Store.deletePostId(id, post);
+const deleteProfilePostId = (id: string) => {
+  posts_Store.deletePostId(id);
 };
 </script>

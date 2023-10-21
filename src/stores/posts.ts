@@ -248,5 +248,24 @@ export const postsStore = defineStore("posts", {
       this.morePosts = [];
       this.following = [];
     },
+
+    deletePostId(id: string, post: Post) {
+      const objWithIdIndex = this.morePosts.findIndex((post) => post.id === id);
+      if (objWithIdIndex > -1) {
+        // console.log("post to be deleted", morePosts.value[objWithIdIndex]);
+        // console.log("morePosts.value", morePosts.value);
+        this.morePosts.splice(objWithIdIndex, 1);
+      }
+      this.deleteProfilePostId(id, post);
+    },
+
+    deleteProfilePostId(id: string, post: Post) {
+      const objWithIdIndex = this.profilePosts.findIndex((post) => post.id === id);
+      if (objWithIdIndex > -1) {
+        // console.log("profile post to be deleted", profilePosts.value[objWithIdIndex]);
+        this.profilePosts.splice(objWithIdIndex, 1);
+        // posts_Store.setPostsLoading(true);
+      }
+    },
   },
 });

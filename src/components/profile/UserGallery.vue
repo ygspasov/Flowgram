@@ -20,10 +20,12 @@ import { toRefs, computed, watch, reactive } from "vue";
 import { type Post } from "@/types/Post";
 import { storeToRefs } from "pinia";
 import { authStore } from "@/stores/auth";
+import { postsStore } from "@/stores/posts";
 import { useRoute } from "vue-router";
 import SingleCard from "@/components/timeline/SingleCard.vue";
 const route = useRoute();
 const store = authStore();
+const posts_Store = postsStore();
 const { userLoggedIn }: any = storeToRefs(store);
 let profileUsername = reactive({
   value: route.params.username,
@@ -42,14 +44,8 @@ watch(
   }
 );
 
-const deleteProfilePostId = (id: string) => {
-  const objWithIdIndex = profilePosts.value.findIndex((post) => post.id === id);
-  if (objWithIdIndex > -1) {
-    // console.log("profile post to be deleted", profilePosts.value[objWithIdIndex]);
-    profilePosts.value.splice(objWithIdIndex, 1);
-    // posts_Store.setPostsLoading(true);
-  }
+const deleteProfilePostId = (id: string, post: Post) => {
+  posts_Store.deletePostId(id, post);
 };
-
 const { profilePosts } = toRefs(props);
 </script>

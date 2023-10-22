@@ -138,7 +138,7 @@ const signout = async () => {
       localStorage.removeItem("uid");
       localStorage.removeItem("profileUID");
       store.setSignOut();
-      posts_Store.setClearImages();
+      posts_Store.setClearTimelinePosts();
     })
     .catch((error) => {});
 };

@@ -17,15 +17,16 @@ const { following, loadPosts, morePosts } = storeToRefs(posts_Store);
 let userIDs = ref(following.value);
 let delay = ref(false);
 let firstCardIndex = ref(0);
-let lastCardIndex = ref(9);
+let lastCardIndex = ref(6);
 
 watch(userLoggedIn, (newVal) => {
   console.log("userUID.value", userUID.value);
   console.log("uid", userUID.value);
   if (newVal) {
-    posts_Store.fetchFollowing(userUID.value).then(() => {
-      console.log("timeline following", following.value);
-    });
+    // posts_Store.fetchFollowing(userUID.value).then(() => {
+    //   console.log("timeline following", following.value);
+    // });
+    getTimelinePosts();
   }
 });
 
@@ -34,6 +35,8 @@ watch(following, (newVal) => {
 });
 
 const getTimelinePosts = () => {
+  console.log("getTimelinePosts running onmounted");
+  console.log("getTimelinePosts userUID.value", userUID.value);
   posts_Store
     .fetchFollowing(userUID.value)
     .then(() => {

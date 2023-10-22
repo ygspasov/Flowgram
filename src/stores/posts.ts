@@ -71,8 +71,8 @@ export const postsStore = defineStore("posts", {
           el.id = doc.id;
           this.timelinePosts.push(el);
         });
-        console.log("this.timelinePosts", this.timelinePosts);
       });
+      // console.log("this.timelinePosts", this.timelinePosts);
     },
     setPostsLoading(val: boolean) {
       this.loadPosts = val;

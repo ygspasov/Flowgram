@@ -88,6 +88,7 @@ const fetchMorePosts = () => {
 };
 
 onMounted(() => {
+  posts_Store.morePosts = [];
   getTimelinePosts();
 });
 </script>

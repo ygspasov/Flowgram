@@ -3,11 +3,7 @@
     <div class="max-w-screen-xl flex flex-col sm:flex-row items-center justify-between mx-auto p-4">
       <div class="flex flex-col sm:flex-row items-center">
         <RouterLink to="/" class="flex items-center mr-0 sm:mr-3 mb-3 sm:mb-0">
-          <img
-            src="https://flowbite.com/docs/images/logo.svg"
-            class="h-8 mr-3"
-            alt="Flowbite Logo"
-          />
+          <img src="@/assets/instagram.png" class="h-8 mr-3" alt="Flowgram Logo" />
           <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
             >Flowgram</span
           >

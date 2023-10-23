@@ -30,8 +30,8 @@ const posts_Store = postsStore();
 const { following, loadPosts, morePosts } = storeToRefs(posts_Store);
 let userIDs = ref(following.value);
 let delay = ref(false);
-let firstCardIndex = ref(0);
-let lastCardIndex = ref(6);
+let firstCardIndex = 0;
+let lastCardIndex = 6;
 let loading = ref(false);
 
 watch(userLoggedIn, (newVal) => {
@@ -80,11 +80,11 @@ watch(loadPosts, (newVal) => {
 
 const fetchMorePosts = () => {
   console.log("Fetching next set of posts");
-  console.log("firstCardIndex.value", firstCardIndex.value);
-  console.log("lastCardIndex.value", lastCardIndex.value);
-  posts_Store.setMorePosts(firstCardIndex.value, lastCardIndex.value);
+  console.log("firstCardIndex.value", firstCardIndex);
+  console.log("lastCardIndex.value", lastCardIndex);
+  posts_Store.setMorePosts(firstCardIndex, lastCardIndex);
   // firstCardIndex.value = 0;
-  lastCardIndex.value += 6;
+  lastCardIndex += 6;
 };
 
 onMounted(() => {

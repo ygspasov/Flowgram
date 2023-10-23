@@ -245,7 +245,7 @@ export const postsStore = defineStore("posts", {
 
     setClearTimelinePosts() {
       this.timelinePosts = [];
-      this.morePosts = [];
+      // this.morePosts = [];
       this.following = [];
     },
 

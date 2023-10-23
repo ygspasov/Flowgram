@@ -27,7 +27,7 @@
       <span
         class="w-100 sm:w-32 mx-2 my-1 py-1 sm:m-0 text-lg text-center text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
       >
-        {{ userInfo.posts }} posts
+        {{ userInfo.posts > 0 ? userInfo.posts : 0 }} posts
       </span>
       <span
         class="w-100 sm:w-32 mx-2 my-1 py-1 sm:m-0 text-lg text-center text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
@@ -41,7 +41,6 @@
       >
         {{ userInfo.following }} following
       </span>
-      <!-- <span class="w-100 sm:w-1/3 text-lg text-center">{{ userInfo.following }} following</span> -->
     </div>
   </div>
 </template>

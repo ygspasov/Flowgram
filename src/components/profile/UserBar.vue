@@ -78,6 +78,7 @@ const followUser = async () => {
     await posts_Store.setFollowUser(followerUid, true);
     await posts_Store.fetchFollowers(profileUID.value, followerUid);
     emit("followAction", true); // Signal success, increment count
+    posts_Store.morePosts = [];
   } catch (error) {
     console.error("Failed to follow user:", error);
   }
@@ -88,6 +89,7 @@ const unFollowUser = async () => {
     await posts_Store.setFollowUser(followerUid, false);
     await posts_Store.fetchFollowers(profileUID.value, followerUid);
     emit("followAction", false); // Signal success, decrement count
+    posts_Store.morePosts = [];
   } catch (error) {
     console.error("Failed to unfollow user:", error);
   }

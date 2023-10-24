@@ -33,20 +33,34 @@
               </svg>
             </div>
             <input
-              v-model="userName"
+              @keydown.enter="onSearch(searchTerm)"
+              v-model="searchTerm"
               type="search"
               id="default-search"
               class="block w-80 p-3 pl-8 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Search people"
               required
             />
-            <button
-              @click.prevent="onSearch"
-              type="submit"
-              class="text-white absolute right-2.5 bottom-1.5 text-center bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700 px-4 py-1"
+            <ul
+              v-if="searchUsers"
+              class="absolute top-16 left-0 block w-80 p-3 pl-8 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             >
-              Search
-            </button>
+              <li class="text-base mb-2">
+                <p>
+                  Showing {{ searchUsers.length }}
+                  {{ searchUsers.length == 1 ? "result" : "results" }} from a total of
+                  {{ users.length }} users:
+                </p>
+              </li>
+              <li v-for="user in searchUsers" :key="user">
+                <button
+                  @click="onSearch(user)"
+                  class="block text-white px-5 py-2.5 text-centerbg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+                >
+                  {{ user }}
+                </button>
+              </li>
+            </ul>
           </div>
         </form>
       </div>
@@ -116,7 +130,7 @@
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
 import AuthModal from "./auth/AuthModal.vue";
-import { ref } from "vue";
+import { ref, computed, onMounted } from "vue";
 import router from "@/router";
 import { getAuth, signOut } from "firebase/auth";
 import { storeToRefs } from "pinia";
@@ -126,7 +140,7 @@ import { postsStore } from "@/stores/posts";
 const store = authStore();
 const posts_Store = postsStore();
 const { userLoggedIn, user, username }: any = storeToRefs(store);
-
+const { users }: any = storeToRefs(posts_Store);
 const auth = getAuth();
 const signout = async () => {
   await signOut(auth)
@@ -134,21 +148,40 @@ const signout = async () => {
       localStorage.removeItem("uid");
       localStorage.removeItem("profileUID");
       store.setSignOut();
-      // posts_Store.setClearTimelinePosts();
     })
     .catch((error) => {});
 };
-let userName = ref("");
-const onSearch = () => {
-  if (userName.value) {
-    router.push(`/profile/${userName.value.toLowerCase()}`);
-    userName.value = "";
+let searchTerm = ref("");
+const onSearch = (user: string) => {
+  if (!searchTerm.value) {
+    return;
   }
+  selectedUser.value = user;
+  console.log("going to route", `/profile/${selectedUser.value.toLowerCase()}`);
+  router.push(`/profile/${selectedUser.value.toLowerCase()}`);
+  searchTerm.value = "";
 };
+const searchUsers = computed(() => {
+  if (searchTerm.value === "") return;
+  if (!searchTerm.value) {
+    router.push(`/profile/${searchTerm.value.toLowerCase()}`);
+  }
+  let matches = 0;
+
+  return users.value.filter((user: string) => {
+    if (user.toLowerCase().includes(searchTerm.value.toLowerCase()) && matches < 10) {
+      matches++;
+      return user;
+    }
+  });
+});
+let selectedUser = ref("");
 const goToProfile = () => {
   if (user) {
     router.push(`/profile/${username.value.toLowerCase()}`);
   }
 };
+onMounted(() => {
+  posts_Store.setUsers();
+});
 </script>
-<style></style>

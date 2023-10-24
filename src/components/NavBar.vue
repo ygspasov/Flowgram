@@ -57,7 +57,7 @@
                   @click="onSearch(user)"
                   class="block text-white px-5 py-2.5 text-centerbg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
                 >
-                  {{ user }}
+                  {{ userUppercase(user) }}
                 </button>
               </li>
             </ul>
@@ -157,7 +157,6 @@ const onSearch = (user: string) => {
     return;
   }
   selectedUser.value = user;
-  console.log("going to route", `/profile/${selectedUser.value.toLowerCase()}`);
   router.push(`/profile/${selectedUser.value.toLowerCase()}`);
   searchTerm.value = "";
 };
@@ -175,6 +174,7 @@ const searchUsers = computed(() => {
     }
   });
 });
+const userUppercase = (user) => user.charAt(0).toUpperCase() + user.slice(1);
 let selectedUser = ref("");
 const goToProfile = () => {
   if (user) {

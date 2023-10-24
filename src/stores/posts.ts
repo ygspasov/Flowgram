@@ -30,6 +30,7 @@ export const postsStore = defineStore("posts", {
     following: ref([]),
     timelinePosts: ref<Post[]>([]),
     morePosts: ref<Post[]>([]),
+    users: ref([]),
   }),
   getters: {},
   actions: {
@@ -233,6 +234,19 @@ export const postsStore = defineStore("posts", {
       }
       // Update the likes field in the database
       await updateDoc(postRef, { likes: newLikes });
+    },
+
+    async setUsers() {
+      const usersRef = collection(db, `usernameToUID`);
+
+      try {
+        const querySnapshot = await getDocs(query(usersRef));
+        const users = querySnapshot.docs.map((doc) => doc.id);
+        console.log("users", users);
+        this.users = users;
+      } catch (error) {
+        console.error("Error getting users:", error);
+      }
     },
 
     setProfileIsFollowed(val: boolean) {

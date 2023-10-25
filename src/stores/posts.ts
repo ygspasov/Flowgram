@@ -154,6 +154,7 @@ export const postsStore = defineStore("posts", {
       }
     },
     async fetchFollowing(followeeId: string) {
+      if (!followeeId) return;
       const followingRef = collection(db, `following/${followeeId}/following`);
       const followingQuery = query(followingRef, where("followed", "==", true));
       const userUID = localStorage.getItem("uid");

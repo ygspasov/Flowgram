@@ -1,21 +1,23 @@
 <template>
-  <div v-if="userLoggedIn">
-    <div class="flex items-center justify-center mt-3">
-      <div
-        v-if="loading"
-        class="flex items-center justify-center w-56 h-16 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
-      >
+  <div id="timeline">
+    <div v-if="userLoggedIn">
+      <div class="flex items-center justify-center mt-3">
         <div
-          class="px-3 py-1 text-xs font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200"
+          v-if="loading"
+          class="flex items-center justify-center w-56 h-16 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
         >
-          Loading posts...
+          <div
+            class="px-3 py-1 text-xs font-medium leading-none text-center text-blue-800 bg-blue-200 rounded-full animate-pulse dark:bg-blue-900 dark:text-blue-200"
+          >
+            Loading posts...
+          </div>
         </div>
       </div>
+      <Cards :userIDs="userIDs" />
     </div>
-    <Cards :userIDs="userIDs" />
+    <div v-else><h3 class="text-lg text-center">Log in to see posts.</h3></div>
+    <PostsObserver v-if="delay" @intersect="fetchMorePosts" />
   </div>
-  <div v-else><h3 class="text-lg text-center">Log in to see posts.</h3></div>
-  <PostsObserver v-if="delay" @intersect="fetchMorePosts" />
 </template>
 <script setup lang="ts">
 import { onMounted, watch, ref } from "vue";
@@ -38,9 +40,6 @@ watch(userLoggedIn, (newVal) => {
   console.log("userUID.value", userUID.value);
   console.log("uid", userUID.value);
   if (newVal) {
-    // posts_Store.fetchFollowing(userUID.value).then(() => {
-    //   console.log("timeline following", following.value);
-    // });
     getTimelinePosts();
   }
 });

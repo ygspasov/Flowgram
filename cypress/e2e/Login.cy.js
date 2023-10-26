@@ -1,5 +1,4 @@
 describe("Login user", () => {
-  beforeEach(() => {});
   it("Should visit and fill out the login form", () => {
     cy.visit("http://localhost:5173/");
     cy.get("#modal button").contains("Login").click();

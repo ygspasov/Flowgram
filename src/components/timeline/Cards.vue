@@ -7,11 +7,10 @@
 </template>
 <script setup lang="ts">
 import SingleCard from "./SingleCard.vue";
-import { type Post } from "@/types/Post";
 import { postsStore } from "@/stores/posts";
 import { storeToRefs } from "pinia";
 const posts_Store = postsStore();
-let { morePosts, profilePosts } = storeToRefs(posts_Store);
+let { morePosts } = storeToRefs(posts_Store);
 
 const deletePostId = (id: string) => {
   posts_Store.deletePostId(id);

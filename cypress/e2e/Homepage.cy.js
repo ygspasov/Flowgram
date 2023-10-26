@@ -2,11 +2,11 @@ import login from "./login.js";
 describe("Homepage", () => {
   beforeEach(() => {
     login();
+    cy.wait(4000);
   });
   it("Check cards after login", () => {
+    cy.visit("/");
     cy.get("#cards").should("exist");
-    cy.wait(4000);
-    cy.get("#cards>div").its("length").should("be.gt", 0);
-    cy.get("#cards").scrollIntoView();
+    cy.get("#cards>div").its("length").should("be.eq", 6);
   });
 });

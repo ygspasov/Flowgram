@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-wrap justify-around items-start my-5">
+  <div id="cards" class="flex flex-wrap justify-around items-start my-5">
     <div v-for="post in morePosts" :key="post.id">
       <SingleCard :post="post" @deletePostId="deletePostId" />
     </div>

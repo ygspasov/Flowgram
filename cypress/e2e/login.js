@@ -1,5 +1,5 @@
 export default function login() {
-  cy.visit("http://localhost:5173/");
+  cy.visit("/");
   cy.get("#modal button").contains("Login").click();
   cy.get("input#userEmail").last().click().type("yavor@test.com");
   cy.get("input#password").last().type("123456");

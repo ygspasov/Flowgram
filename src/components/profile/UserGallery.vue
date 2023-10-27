@@ -1,6 +1,10 @@
 <template>
   <div id="user-profile">
-    <div v-if="userCheck" class="flex flex-wrap flex-col md:flex-row justify-between my-5">
+    <div
+      id="profileCards"
+      v-if="userCheck"
+      class="flex flex-wrap flex-col md:flex-row justify-between my-5"
+    >
       <div
         class="flex justify-center mb-5 w-full md:w-1/3"
         v-for="post in profilePosts"

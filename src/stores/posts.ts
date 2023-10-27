@@ -120,6 +120,7 @@ export const postsStore = defineStore("posts", {
       }
     },
     async getFollowers(uid: string) {
+      if (!uid) return;
       console.log("getFollowers uid", uid);
       const followeesFollowersRef = collection(
         db,
@@ -140,6 +141,7 @@ export const postsStore = defineStore("posts", {
       }
     },
     async fetchFollowers(followeeId: string, followerId: string) {
+      if (!followeeId) return;
       const followersRef = collection(db, `followeesFollowers/${followeeId}/followers`);
       const followersQuery = query(followersRef, where("followed", "==", true));
 

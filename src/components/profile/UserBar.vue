@@ -2,7 +2,7 @@
   <div class="my-2">
     <div class="flex flex-wrap justify-between p-5">
       <h2 class="text-3xl flex items-center">{{ capitalizedUsername }}</h2>
-      <div id="buttonGroup" class="flex flex-col">
+      <div class="flex flex-col">
         <UploadModal v-if="userCheck" />
         <button
           @click="followUser"
@@ -22,7 +22,7 @@
         </button>
       </div>
     </div>
-    <div class="flex flex-col sm:flex-row flex-wrap justify-between p-5">
+    <div id="buttonGroup" class="flex flex-col sm:flex-row flex-wrap justify-between p-5">
       <!-- <span class="w-100 sm:w-1/3 text-lg text-center">{{ userInfo.posts }} posts</span> -->
       <span
         class="w-100 sm:w-32 mx-2 my-1 py-1 sm:m-0 text-lg text-center text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"

@@ -20,7 +20,7 @@ import { type Post } from "@/types/Post";
 const followeesFollowersCollection = "followeesFollowers";
 export const postsStore = defineStore("posts", {
   state: () => ({
-    profileUID: ref(""),
+    profileUID: ref(""), //the id of the user the currently viewed profile belongs to
     numberOfFollowers: ref(0),
     numberOfFollowing: ref(0),
     loadPosts: ref(false),

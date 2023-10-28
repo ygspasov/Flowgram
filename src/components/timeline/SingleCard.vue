@@ -6,11 +6,10 @@
       <img class="rounded-t-lg" :src="post.downloadURL" alt="" />
     </a>
     <div class="p-5">
-      <a>
-        <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-          {{ post.description }}
-        </h5>
-      </a>
+      <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+        {{ post.description }}
+      </h5>
+
       <div class="my-3" v-if="showEdit">
         <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >Edit description</label
@@ -32,7 +31,9 @@
           Edit
         </button>
       </div>
-      <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Posted by {{ post.username }}</p>
+      <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+        Posted by <a class="text-white" @click="goToProfile">{{ post.username }}</a>
+      </p>
       <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">On {{ timeFormat }}</p>
       <div class="flex justify-between text-white">
         <div id="likes">
@@ -59,15 +60,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted } from "vue";
+import { computed, ref } from "vue";
 import { postsStore } from "@/stores/posts";
 import { authStore } from "@/stores/auth";
 import { storeToRefs } from "pinia";
+import router from "@/router";
 const auth_Store = authStore();
 const { userUID } = storeToRefs(auth_Store);
 const posts_Store = postsStore();
-const { following } = storeToRefs(posts_Store);
-let userIDs = ref(following.value);
 let showEdit = ref(false);
 const emit = defineEmits(["deletePostId"]);
 
@@ -81,11 +81,6 @@ let post = props.post;
 const deletePost = () => {
   const id = props.post.id;
   posts_Store.deletePost(id).then(() => {
-    // posts_Store.fetchFollowing(userUID.value).then(() => {
-    //   console.log("userIDs.value deletePost", userIDs.value);
-    //   // posts_Store.setTimelinePosts(userIDs.value);
-    //   posts_Store.setPostsLoading(true);
-    // });
     emit("deletePostId", id);
   });
 };
@@ -126,11 +121,10 @@ const likedByUID = computed(() => {
 const isUserPost = computed(() => {
   return userUID.value == post.uid;
 });
-onMounted(() => {
-  // console.log("post", post);
-  // console.log("userUID", userUID.value);
-  // console.log("post.uid", post.uid);
-});
+const goToProfile = () => {
+  console.log("post.username", post.username);
+  router.push(`/profile/${post.username.toLowerCase()}`);
+};
 </script>
 <style scoped>
 .disabled {

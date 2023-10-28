@@ -145,8 +145,6 @@ const auth = getAuth();
 const signout = async () => {
   await signOut(auth)
     .then(() => {
-      localStorage.removeItem("uid");
-      localStorage.removeItem("profileUID");
       store.setSignOut();
     })
     .catch((error) => {});

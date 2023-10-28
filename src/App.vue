@@ -6,10 +6,10 @@ import { authStore } from "@/stores/auth";
 const store = authStore();
 const username = localStorage.getItem("username");
 const uid = localStorage.getItem("uid");
+const userLoggedIn = localStorage.getItem("userLoggedIn");
 onMounted(() => {
-  if (username && uid) {
-    store.setLoginState(username, uid);
-  }
+  userLoggedIn ? store.setSignIn() : null;
+  username && uid ? store.setLoginState(username, uid) : null;
 });
 </script>
 

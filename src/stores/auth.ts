@@ -64,11 +64,11 @@ export const authStore = defineStore("auth", {
           const user = userCredential.user;
           console.log("user", user);
           this.setUser(user);
-          this.userLoggedIn = true;
           this.username = user.displayName;
           localStorage.setItem("uid", user.uid);
           localStorage.setItem("username", user.displayName);
           // router.push(`/profile/${user.displayName.toLowerCase()}`);
+          this.setSignIn();
           router.push("/");
         })
         .catch((error) => {
@@ -79,14 +79,16 @@ export const authStore = defineStore("auth", {
     setLoginState(username: string, uid: string) {
       this.username = username;
       this.userUID = uid;
+    },
+    setSignIn() {
       this.userLoggedIn = true;
+      localStorage.setItem("userLoggedIn", "true");
     },
     setSignOut() {
       this.userLoggedIn = false;
       this.userUID = "";
       this.username = "";
-      localStorage.removeItem("uid");
-      localStorage.removeItem("username");
+      localStorage.removeItem("userLoggedIn");
     },
   },
 });

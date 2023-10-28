@@ -29,7 +29,7 @@ import PostsObserver from "@/components/PostsObserver.vue";
 const auth_Store = authStore();
 const { userLoggedIn, userUID } = storeToRefs(auth_Store);
 const posts_Store = postsStore();
-const { following, loadPosts, morePosts } = storeToRefs(posts_Store);
+const { following, loadPosts } = storeToRefs(posts_Store);
 let userIDs = ref(following.value);
 let delay = ref(false);
 let firstCardIndex = 0;
@@ -48,13 +48,10 @@ watch(following, (newVal) => {
   userIDs.value = newVal;
 });
 
-const getTimelinePosts = () => {
-  console.log("getTimelinePosts running onmounted");
-  console.log("getTimelinePosts userUID.value", userUID.value);
-  posts_Store
+const getTimelinePosts = async () => {
+  await posts_Store
     .fetchFollowing(userUID.value)
     .then(() => {
-      console.log("timeline following", following.value);
       posts_Store.setTimelinePosts(userIDs.value);
       loading.value = true;
     })

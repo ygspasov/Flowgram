@@ -94,8 +94,10 @@ const unFollowUser = async () => {
     console.error("Failed to unfollow user:", error);
   }
 };
-const getFollowingState = () => {
-  posts_Store.fetchFollowers(profileUID.value, followerUid);
+const getFollowingState = async () => {
+  await posts_Store.getFollowers(profileUID.value).then(() => {
+    posts_Store.fetchFollowers(profileUID.value, followerUid);
+  });
 };
 const profileIsFollowedComputed = computed(() => profileIsFollowed.value);
 watch(profileIsFollowedComputed, (newValue) => {
@@ -103,11 +105,7 @@ watch(profileIsFollowedComputed, (newValue) => {
 });
 onMounted(() => {
   initFlowbite();
-  setTimeout(() => {
-    posts_Store.getFollowers(profileUID.value);
-    getFollowingState();
-    posts_Store.fetchFollowing(profileUID.value);
-  }, 1500);
+  getFollowingState();
 });
 </script>
 <style></style>

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="max-w-sm mb-5 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+    class="flex flex-col justify-between h-full max-w-sm mb-5 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
   >
     <a :href="post.downloadURL" class="flex justify-center" target="_blank">
       <img class="rounded-t-lg" :src="post.downloadURL" alt="" />

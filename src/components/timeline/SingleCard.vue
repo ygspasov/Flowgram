@@ -32,11 +32,11 @@
         </button>
       </div>
       <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-        Posted by <a class="text-white" @click="goToProfile">{{ post.username }}</a>
+        Posted by <a class="text-white ml-2" @click="goToProfile">{{ post.username }}</a>
       </p>
       <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">On {{ timeFormat }}</p>
       <div class="flex justify-between text-white">
-        <div id="likes">
+        <div class="likes">
           <a @click="toggleLike"
             ><font-awesome-icon :icon="['fas', 'thumbs-up']" size="xl" :class="{ likedByUID }"
           /></a>

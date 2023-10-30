@@ -37,8 +37,6 @@ let lastCardIndex = 6;
 let loading = ref(false);
 
 watch(userLoggedIn, (newVal) => {
-  console.log("userUID.value", userUID.value);
-  console.log("uid", userUID.value);
   if (newVal) {
     getTimelinePosts();
   }
@@ -75,9 +73,6 @@ watch(loadPosts, (newVal) => {
 });
 
 const fetchMorePosts = () => {
-  console.log("Fetching next set of posts");
-  console.log("firstCardIndex.value", firstCardIndex);
-  console.log("lastCardIndex.value", lastCardIndex);
   posts_Store.setMorePosts(firstCardIndex, lastCardIndex);
   // firstCardIndex.value = 0;
   lastCardIndex += 6;

@@ -50,7 +50,6 @@ export const postsStore = defineStore("posts", {
       });
     },
     setMorePosts(firstCardIndex: number, lastCardIndex: number) {
-      console.log("firstCardIndex, lastCardIndex", firstCardIndex, lastCardIndex);
       this.morePosts = this.timelinePosts
         .sort((a, b) => {
           return b.uploadDate - a.uploadDate;
@@ -59,7 +58,6 @@ export const postsStore = defineStore("posts", {
     },
     setTimelinePosts(profileIDs: Array<string>) {
       this.setClearTimelinePosts();
-      console.log("profileIDs in setTimelinePosts", profileIDs);
       profileIDs.forEach(async (id) => {
         const q = query(
           collection(db, "posts"),
@@ -73,7 +71,6 @@ export const postsStore = defineStore("posts", {
           this.timelinePosts.push(el);
         });
       });
-      // console.log("this.timelinePosts", this.timelinePosts);
     },
     setPostsLoading(val: boolean) {
       this.loadPosts = val;
@@ -90,10 +87,8 @@ export const postsStore = defineStore("posts", {
       try {
         if (followOrUnfollow) {
           await setDoc(doc(followersCollectionRef, followerUid), { followed: true });
-          console.log(`User with UID ${followerUid} is now following user with UID ${followeeUid}`);
         } else {
           await setDoc(doc(followersCollectionRef, followerUid), { followed: false });
-          console.log(`User with UID ${followerUid} has unfollowed user with UID ${followeeUid}`);
         }
       } catch (error) {
         console.error("Error following user:", error);
@@ -106,14 +101,8 @@ export const postsStore = defineStore("posts", {
       try {
         if (followOrUnfollow) {
           await setDoc(doc(followingCollectionRef, followeeUid), { followed: true });
-          console.log(
-            `User with UID ${followeeUid} is being followed by user with UID ${followerUid}`
-          );
         } else {
           await setDoc(doc(followingCollectionRef, followeeUid), { followed: false });
-          console.log(
-            `User with UID ${followeeUid} is no longer being followed by user with UID ${followerUid}`
-          );
         }
       } catch (error) {
         console.error("Error following user:", error);
@@ -121,7 +110,6 @@ export const postsStore = defineStore("posts", {
     },
     async getFollowers(uid: string) {
       if (!uid) return;
-      console.log("getFollowers uid", uid);
       const followeesFollowersRef = collection(
         db,
         `${followeesFollowersCollection}/${uid}/followers`
@@ -133,9 +121,7 @@ export const postsStore = defineStore("posts", {
         );
         const followers = querySnapshot.docs.map((doc) => doc.id);
 
-        // console.log(`Followers of user with UID ${uid}:`, followers);
         this.numberOfFollowers = followers.length;
-        // console.log("number of followers", this.numberOfFollowers);
       } catch (error) {
         console.error("Error getting followers:", error);
       }
@@ -160,14 +146,12 @@ export const postsStore = defineStore("posts", {
       const followingRef = collection(db, `following/${followeeId}/following`);
       const followingQuery = query(followingRef, where("followed", "==", true));
       const userUID = localStorage.getItem("uid");
-      console.log("fetchFollowing userUID", userUID);
       try {
         const querySnapshot = await getDocs(followingQuery);
         let following = querySnapshot.docs.map((doc) => doc.id);
         //Adding the logged in user to the people being followed on the user timeline
         following.push(userUID);
         this.following = following;
-        console.log("this.following", this.following);
         //Removing yourself from the number of people being followed
         this.numberOfFollowing = following.length - 1;
         // console.log("number of people following", this.numberOfFollowing);
@@ -195,14 +179,12 @@ export const postsStore = defineStore("posts", {
           const imageRef = storageRef(storage, imageURL);
           // Deleting the image
           await deleteObject(imageRef);
-          console.log("Image associated with the post deleted successfully.");
         } else {
           console.log("No image associated with the post.");
         }
 
         // Deleting the post data
         await deleteDoc(postRef);
-        console.log("Post deleted successfully.");
       } catch (error) {
         console.error("Error deleting post:", error);
       }
@@ -214,8 +196,6 @@ export const postsStore = defineStore("posts", {
         await updateDoc(postRef, {
           description: newDescription,
         });
-
-        console.log("Post description updated successfully.");
       } catch (error) {
         console.error("Error updating post description:", error);
       }
@@ -245,7 +225,6 @@ export const postsStore = defineStore("posts", {
       try {
         const querySnapshot = await getDocs(query(usersRef));
         const users = querySnapshot.docs.map((doc) => doc.id);
-        console.log("users", users);
         this.users = users;
       } catch (error) {
         console.error("Error getting users:", error);
@@ -269,8 +248,6 @@ export const postsStore = defineStore("posts", {
     deletePostId(id: string) {
       const objWithIdIndex = this.morePosts.findIndex((post) => post.id === id);
       if (objWithIdIndex > -1) {
-        // console.log("post to be deleted", morePosts.value[objWithIdIndex]);
-        // console.log("morePosts.value", morePosts.value);
         this.morePosts.splice(objWithIdIndex, 1);
       }
       this.deleteProfilePostId(id);
@@ -279,9 +256,7 @@ export const postsStore = defineStore("posts", {
     deleteProfilePostId(id: string) {
       const objWithIdIndex = this.profilePosts.findIndex((post) => post.id === id);
       if (objWithIdIndex > -1) {
-        // console.log("profile post to be deleted", profilePosts.value[objWithIdIndex]);
         this.profilePosts.splice(objWithIdIndex, 1);
-        // posts_Store.setPostsLoading(true);
       }
     },
   },

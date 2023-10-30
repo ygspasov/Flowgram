@@ -25,7 +25,6 @@ export const authStore = defineStore("auth", {
     setUser(user: any) {
       this.user = user;
       this.userUID = user.uid;
-      console.log("this.userUID", this.userUID);
     },
     async registerUser(userEmail: string, password: string, userName: string) {
       const auth = getAuth();
@@ -33,7 +32,6 @@ export const authStore = defineStore("auth", {
         .then((userCredential) => {
           const user = userCredential.user;
           this.username = user.displayName;
-          console.log("user", user);
           this.setUser(user);
           this.userLoggedIn = true;
           // Update the user's profile to include the username
@@ -62,7 +60,6 @@ export const authStore = defineStore("auth", {
       await signInWithEmailAndPassword(auth, userEmail, password)
         .then((userCredential) => {
           const user = userCredential.user;
-          console.log("user", user);
           this.setUser(user);
           this.username = user.displayName;
           localStorage.setItem("uid", user.uid);

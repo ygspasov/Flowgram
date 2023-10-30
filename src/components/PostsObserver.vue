@@ -8,9 +8,7 @@ const root = ref(null);
 const emits = defineEmits(["intersect"]);
 
 onMounted(() => {
-  console.log("root.value", root.value);
   observer.value = new IntersectionObserver(([entry]) => {
-    console.log("entry", entry);
     if (entry && entry.isIntersecting) {
       //run some logic or emit an event to run logic
       emits("intersect");

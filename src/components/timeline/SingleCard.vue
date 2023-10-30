@@ -87,7 +87,6 @@ const deletePost = () => {
 const editPost = () => {
   posts_Store.editPost(post.id, post.description).then(() => {
     showEdit.value = false;
-    console.log("showEdit", showEdit.value);
   });
 };
 const timeFormat = computed(() => new Date(props.post.uploadDate).toUTCString());
@@ -99,7 +98,6 @@ const toggleLike = () => {
     } else {
       post.likes = { ...post.likes, [userUID.value]: true };
     }
-    console.log("post.likes", post.likes);
   });
 };
 const numberOfLikes = computed(() => {
@@ -122,7 +120,6 @@ const isUserPost = computed(() => {
   return userUID.value == post.uid;
 });
 const goToProfile = () => {
-  console.log("post.username", post.username);
   router.push(`/profile/${post.username.toLowerCase()}`);
 };
 </script>

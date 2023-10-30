@@ -197,7 +197,6 @@ if (props.isLogin) {
   fields = { userEmail, password, userName, repeat };
 }
 const v$ = useVuelidate(rules, fields);
-console.log("v$", v$);
 
 const registerOrsignIn = () => {
   props.isLogin ? signin() : register();

@@ -64,7 +64,6 @@ const getProfileUID = async () => {
   loading.value = true;
   store.setClearProfilePosts();
   const username = route.params.username;
-  console.log("username", username);
   const profileUIDRef = doc(db, "usernameToUID", username);
 
   await getDoc(profileUIDRef)
@@ -72,7 +71,6 @@ const getProfileUID = async () => {
       docSnap = snapshot;
       if (docSnap.exists()) {
         profileUID = docSnap.data().uid;
-        console.log("profileUID:", profileUID);
         store.setProfileUID(profileUID);
       } else {
         console.log("No such document!");
@@ -102,7 +100,6 @@ const getPosts = async () => {
 };
 
 const followAction = (val: boolean) => {
-  console.log("followAction", val);
   val ? (userInfo.value.followers += 1) : (userInfo.value.followers -= 1);
 };
 

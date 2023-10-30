@@ -100,9 +100,7 @@ const getFollowingState = async () => {
   });
 };
 const profileIsFollowedComputed = computed(() => profileIsFollowed.value);
-watch(profileIsFollowedComputed, (newValue) => {
-  console.log("Profile is followed:", newValue);
-});
+
 onMounted(() => {
   initFlowbite();
   getFollowingState();

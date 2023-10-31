@@ -71,7 +71,7 @@ Clicking on the Upload photo button presents you with an upload modal, through w
 
 The newly added post always displays first, both on the user profile and the user timeline as all posts are sorted by date when post data is requested from Firestore.
 
-### Tracking the number of people you are following, your followers and number of posts you've made
+### Tracking the number of people you are following, your followers and the number of posts you've made
 
 The user bar on the user profile offers that information displayed in 3 tabs under your username:
 
@@ -85,15 +85,13 @@ On your timelime, you can see the posts of the people you're following along you
 
 ### Editing and deleting posts
 
-On your timelime, you can see the posts of the people you're following along your own posts, again ordered by post date.
+Only your posts display the edit and delete icons. Clicking the edit icon opens/hides the Edit description field to allow for new post description. The delete icon simply deletes the entire post together with the associated image.
 
 ![EditDelete](./src/assets/images/readme/editdelete.jpg)
 
-Only your posts display the edit and delete icons. Clicking the edit icon opens/hides the Edit description field to allow for new post description. The delete icon simply deletes the entire post together with the associated image.
-
 ### Liking/disliking posts and tracking your own likes
 
-Each post displays the number of likes it has received from different users. Your likes are colored in green.
+Each post displays the number of likes it has received from different users. The posts containing your like are colored in green.
 
 ![Likes](./src/assets/images/readme/likes.jpg)
 

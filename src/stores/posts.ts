@@ -11,7 +11,6 @@ import {
   orderBy,
   deleteDoc,
   updateDoc,
-  type DocumentData,
 } from "firebase/firestore";
 import { ref as storageRef, deleteObject, getStorage } from "firebase/storage";
 // @ts-ignore

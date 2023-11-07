@@ -101,7 +101,7 @@ const auth_Store = authStore();
 const storage = getStorage();
 let loading = ref<Boolean>(false);
 let uploadText = ref<String>("");
-let description = ref<String>("");
+let description = ref("");
 const { username }: any = storeToRefs(auth_Store);
 
 const uid = localStorage.getItem("uid");

@@ -48,8 +48,8 @@ watch(
   }
 );
 
-const deleteProfilePostId = (id: string, post: Post) => {
-  posts_Store.deletePostId(id, post);
+const deleteProfilePostId = (id: string) => {
+  posts_Store.deletePostId(id);
 };
 const { profilePosts } = toRefs(props);
 </script>

@@ -172,7 +172,7 @@ const searchUsers = computed(() => {
     }
   });
 });
-const userUppercase = (user) => user.charAt(0).toUpperCase() + user.slice(1);
+const userUppercase = (user: string) => user.charAt(0).toUpperCase() + user.slice(1);
 let selectedUser = ref("");
 const goToProfile = () => {
   if (user) {

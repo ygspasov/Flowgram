@@ -31,7 +31,7 @@ export const authStore = defineStore("auth", {
       await createUserWithEmailAndPassword(auth, userEmail, password)
         .then((userCredential) => {
           const user = userCredential.user;
-          this.username = user.displayName;
+          this.username = user.displayName!;
           this.setUser(user);
           this.userLoggedIn = true;
           // Update the user's profile to include the username
@@ -39,8 +39,8 @@ export const authStore = defineStore("auth", {
             displayName: userName,
           }).then(async () => {
             localStorage.setItem("uid", user.uid);
-            localStorage.setItem("username", user.displayName);
-            this.setLoginState(user.displayName, user.uid);
+            localStorage.setItem("username", user.displayName!);
+            this.setLoginState(user.displayName!, user.uid);
             // router.push(`/profile/${user.displayName.toLowerCase()}`);
             router.push("/");
             //Link the username to the id
@@ -61,9 +61,9 @@ export const authStore = defineStore("auth", {
         .then((userCredential) => {
           const user = userCredential.user;
           this.setUser(user);
-          this.username = user.displayName;
+          this.username = user.displayName!;
           localStorage.setItem("uid", user.uid);
-          localStorage.setItem("username", user.displayName);
+          localStorage.setItem("username", user.displayName!);
           // router.push(`/profile/${user.displayName.toLowerCase()}`);
           this.setSignIn();
           router.push("/");

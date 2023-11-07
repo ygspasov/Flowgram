@@ -1,9 +1,9 @@
 <template>
   <div class="" :key="componentKey">
     <userBar
-      :username="$route.params.username"
+      :username="($route.params.username as String)"
       :userInfo="userInfo"
-      :key="$route.params.username"
+      :key:String="$route.params.username"
       @followAction="followAction"
     />
     <div class="flex items-center justify-center">
@@ -31,7 +31,7 @@ import { ref, onMounted, watch } from "vue";
 import { type userInfo } from "@/types/UserInfo";
 // @ts-ignore
 import { db } from "@/firebase/firebase.js";
-import { doc, getDoc } from "firebase/firestore";
+import { DocumentSnapshot, doc, getDoc } from "firebase/firestore";
 import { postsStore } from "@/stores/posts";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
@@ -46,8 +46,9 @@ watch(route, () => {
   getProfileUID();
 });
 
-const { loadPosts, numberOfFollowers, numberOfFollowing, profilePosts, numberOfPosts }: any =
+const { loadPosts, numberOfFollowers, numberOfFollowing, profilePosts, numberOfPosts } =
   storeToRefs(store);
+
 watch(loadPosts, (newVal) => {
   if (newVal) {
     store.setClearProfilePosts();
@@ -56,16 +57,14 @@ watch(loadPosts, (newVal) => {
 });
 
 //Retrieving the UID associated with the name of the user
-
-let docSnap: any;
-let profileUID: any;
+let profileUID: string;
 
 const getProfileUID = async () => {
   loading.value = true;
   store.setClearProfilePosts();
-  const username = route.params.username;
+  const username = route.params.username as string;
   const profileUIDRef = doc(db, "usernameToUID", username);
-
+  let docSnap: DocumentSnapshot;
   await getDoc(profileUIDRef)
     .then((snapshot) => {
       docSnap = snapshot;
@@ -89,7 +88,7 @@ const getProfileUID = async () => {
     });
 };
 
-const userInfo = ref<userInfo>({
+const userInfo = ref({
   posts: numberOfPosts,
   followers: numberOfFollowers,
   following: numberOfFollowing,

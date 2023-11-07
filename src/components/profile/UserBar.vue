@@ -23,7 +23,6 @@
       </div>
     </div>
     <div id="buttonGroup" class="flex flex-col sm:flex-row flex-wrap justify-between p-5">
-      <!-- <span class="w-100 sm:w-1/3 text-lg text-center">{{ userInfo.posts }} posts</span> -->
       <span
         class="w-100 sm:w-32 mx-2 my-1 py-1 sm:m-0 text-lg text-center text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
       >
@@ -34,8 +33,6 @@
       >
         {{ userInfo.followers }} followers
       </span>
-      <!-- <span class="w-100 sm:w-1/3 text-lg text-center">{{ userInfo.followers }} followers</span> -->
-
       <span
         class="w-100 sm:w-32 mx-2 my-1 py-1 sm:m-0 text-lg text-center text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
       >
@@ -50,13 +47,13 @@ import { type userInfo } from "@/types/UserInfo";
 import { authStore } from "@/stores/auth";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
-import { computed, onMounted, watch } from "vue";
+import { computed, onMounted } from "vue";
 import UploadModal from "./UploadPhotoModal.vue";
 import { postsStore } from "@/stores/posts";
 const store = authStore();
-const { userLoggedIn }: any = storeToRefs(store);
+const { userLoggedIn } = storeToRefs(store);
 const posts_Store = postsStore();
-const { profileUID, profileIsFollowed }: any = storeToRefs(posts_Store);
+const { profileUID, profileIsFollowed } = storeToRefs(posts_Store);
 const props = defineProps<{
   username: String;
   userInfo: userInfo;
@@ -75,10 +72,12 @@ const followerUid: string | null = localStorage.getItem("uid");
 const emit = defineEmits(["followAction"]);
 const followUser = async () => {
   try {
-    await posts_Store.setFollowUser(followerUid, true);
-    await posts_Store.fetchFollowers(profileUID.value, followerUid);
-    emit("followAction", true); // Signal success, increment count
-    posts_Store.morePosts = [];
+    if (followerUid) {
+      await posts_Store.setFollowUser(followerUid, true);
+      await posts_Store.fetchFollowers(profileUID.value, followerUid);
+      emit("followAction", true); // Signal success, increment count
+      posts_Store.morePosts = [];
+    }
   } catch (error) {
     console.error("Failed to follow user:", error);
   }
@@ -86,17 +85,21 @@ const followUser = async () => {
 
 const unFollowUser = async () => {
   try {
-    await posts_Store.setFollowUser(followerUid, false);
-    await posts_Store.fetchFollowers(profileUID.value, followerUid);
-    emit("followAction", false); // Signal success, decrement count
-    posts_Store.morePosts = [];
+    if (followerUid) {
+      await posts_Store.setFollowUser(followerUid, false);
+      await posts_Store.fetchFollowers(profileUID.value, followerUid);
+      emit("followAction", false); // Signal success, decrement count
+      posts_Store.morePosts = [];
+    }
   } catch (error) {
     console.error("Failed to unfollow user:", error);
   }
 };
 const getFollowingState = async () => {
   await posts_Store.getFollowers(profileUID.value).then(() => {
-    posts_Store.fetchFollowers(profileUID.value, followerUid);
+    if (followerUid) {
+      posts_Store.fetchFollowers(profileUID.value, followerUid);
+    }
   });
 };
 const profileIsFollowedComputed = computed(() => profileIsFollowed.value);

@@ -11,6 +11,7 @@ import {
   orderBy,
   deleteDoc,
   updateDoc,
+  type DocumentData,
 } from "firebase/firestore";
 import { ref as storageRef, deleteObject, getStorage } from "firebase/storage";
 // @ts-ignore
@@ -26,11 +27,11 @@ export const postsStore = defineStore("posts", {
     loadPosts: ref(false),
     profileIsFollowed: ref(false),
     profilePosts: ref<Post[]>([]),
-    numberOfPosts: ref<Post[]>([]),
-    following: ref([]),
+    numberOfPosts: ref(0),
+    following: ref([""]),
     timelinePosts: ref<Post[]>([]),
     morePosts: ref<Post[]>([]),
-    users: ref([]),
+    users: ref([""]),
   }),
   getters: {},
   actions: {
@@ -42,7 +43,7 @@ export const postsStore = defineStore("posts", {
       );
       const querySnapshot = await getDocs(q);
       querySnapshot.forEach((doc) => {
-        const el = doc.data();
+        const el = doc.data() as Post;
         el.id = doc.id;
         this.profilePosts.push(el);
         this.numberOfPosts = this.profilePosts.length;
@@ -66,7 +67,7 @@ export const postsStore = defineStore("posts", {
         );
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
-          const el = doc.data();
+          const el = doc.data() as Post;
           el.id = doc.id;
           this.timelinePosts.push(el);
         });
@@ -145,7 +146,7 @@ export const postsStore = defineStore("posts", {
       if (!followeeId) return;
       const followingRef = collection(db, `following/${followeeId}/following`);
       const followingQuery = query(followingRef, where("followed", "==", true));
-      const userUID = localStorage.getItem("uid");
+      const userUID = localStorage.getItem("uid")!;
       try {
         const querySnapshot = await getDocs(followingQuery);
         let following = querySnapshot.docs.map((doc) => doc.id);
@@ -204,7 +205,7 @@ export const postsStore = defineStore("posts", {
     async toggleLike(postId: string, userId: string) {
       const postRef = doc(db, "posts", postId);
       const postSnapshot = await getDoc(postRef);
-      const post = postSnapshot.data();
+      const post = postSnapshot.data() as Post;
       const liked = post.likes && post.likes[userId];
       let newLikes;
       if (liked) {

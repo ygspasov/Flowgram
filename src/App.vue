@@ -4,8 +4,8 @@ import Navbar from "@/components/NavBar.vue";
 import { onMounted } from "vue";
 import { authStore } from "@/stores/auth";
 const store = authStore();
-const username = localStorage.getItem("username");
-const uid = localStorage.getItem("uid");
+const username = localStorage.getItem("username") as string;
+const uid = localStorage.getItem("uid") as string;
 const userLoggedIn = localStorage.getItem("userLoggedIn");
 onMounted(() => {
   userLoggedIn ? store.setSignIn() : null;

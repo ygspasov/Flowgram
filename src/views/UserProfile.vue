@@ -10,19 +10,20 @@
 <script setup lang="ts">
 import { watch, ref, onMounted } from "vue";
 import { doc, getDoc } from "firebase/firestore";
+//@ts-ignore
 import { db } from "@/firebase/firebase.js";
 import SingleProfile from "@/components/profile/SingleProfile.vue";
 import { useRoute } from "vue-router";
 const route = useRoute();
-let username = route.params.username;
+let username = route.params.username as string;
 const userExists = ref(true);
 watch(route, () => {
   //watching for changes in the router parameter(username) and updating the profile images
-  username = route.params.username;
+  username = route.params.username as string;
   checkUsernameExists(username);
 });
 
-const checkUsernameExists = async (usernameToCheck) => {
+const checkUsernameExists = async (usernameToCheck: string) => {
   // Convert the username to lowercase (or uppercase) to ignore case
   const lowerUsername = usernameToCheck.toLowerCase();
 
